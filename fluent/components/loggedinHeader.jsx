@@ -13,7 +13,7 @@ export default function loggedinHeader() {
                     <label htmlFor="header-search" className="sr-only">
                         Search Fluentsets
                     </label>
-                    <input placeholder='Search.....' type="text" className='rounded-3xl w-full pr-4 pl-10 py-2' />
+                    <input placeholder='Search.....' type="text" className='rounded-3xl w-full pr-4 pl-10 py-2 bg-gray-50 text-gray-900' />
                     <img src="/icons/search.png" alt="search" className='absolute left-3 top-1/2 transform -translate-y-1/2 h-6' />
                 </div>
             </div>

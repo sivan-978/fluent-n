@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -16,14 +18,14 @@ function sideNav() {
                     </Link>
 
                     <Link href="/library" className={`hover:bg-slate-600 flex items-center gap-4 pl-4 py-1 rounded-lg 
-                        ${pathname === "/home" ? "bg-slate-600" : ""}`}
+                        ${pathname === "/library" ? "bg-slate-600" : ""}`}
                     >
                         <img src="/icons/folder.png" alt="Folder" className='h-8 w-8' />
                         <p className='font-semibold'>Library</p>
                     </Link>
 
                     <Link href="/notifications" className={`hover:bg-slate-600 flex items-center gap-4 pl-4 py-1 rounded-lg 
-                        ${pathname === "/home" ? "bg-slate-600" : ""}`}
+                        ${pathname === "/notifications" ? "bg-slate-600" : ""}`}
                     >
                         <img src="/icons/notification.png" alt="notification" className='h-8 w-8' />
                         <p className='font-semibold'>Notifications</p>
