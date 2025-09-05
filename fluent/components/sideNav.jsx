@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 function sideNav() {
     const pathname = usePathname();
+    const inLibrary = pathname.startsWith("/library");
     return (
         <aside>
             <nav className='grid w-64 px-5 py-6 '>
@@ -17,8 +18,8 @@ function sideNav() {
                         <p className='font-semibold'>Home</p>
                     </Link>
 
-                    <Link href="/library" className={`hover:bg-slate-600 flex items-center gap-4 pl-4 py-1 rounded-lg 
-                        ${pathname === "/library" ? "bg-slate-600" : ""}`}
+                    <Link href="/library/flashcard-sets" className={`hover:bg-slate-600 flex items-center gap-4 pl-4 py-1 rounded-lg 
+                        ${inLibrary ? "bg-slate-600" : ""}`}
                     >
                         <img src="/icons/folder.png" alt="Folder" className='h-8 w-8' />
                         <p className='font-semibold'>Library</p>
