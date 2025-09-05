@@ -4,8 +4,7 @@ import LoggedinHeader from "@/components/loggedinHeader.jsx"
 import SideNav from "@/components/sideNav.jsx"
 import FlashcardBoxPreview from "@/components/flashcardBoxPreview.jsx"
 import BestCreatorBoxPreview from "@/components/bestCreatorBoxPreview.jsx"
-
-import PopularCardsetsBoxPreview from '../components/popularCardsetsBoxPreview'
+import PopularCardsetsBoxPreview from '@/components/popularCardsetsBoxPreview.jsx'
 
 
 function home() {
