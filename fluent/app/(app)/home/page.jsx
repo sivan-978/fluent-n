@@ -3,7 +3,7 @@ import Link from "next/link";
 import LoggedinHeader from "@/components/loggedinHeader.jsx"
 import SideNav from "@/components/sideNav.jsx"
 
-import FlashcardBoxPreview from '../components/flashcardBoxPreview'
+import FlashcardBoxPreview from "@/components/flashcardBoxPreview.jsx"
 import BestCreatorBoxPreview from '../components/bestCreatorBoxPreview'
 import PopularCardsetsBoxPreview from '../components/popularCardsetsBoxPreview'
 
