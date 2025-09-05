@@ -1,6 +1,7 @@
 
 import Link from "next/link";
-import LoggedinHeader from '../components/loggedinHeader'
+import LoggedinHeader from "@/components/loggedinHeader.jsx"
+
 import SideNav from '../components/sideNav'
 import FlashcardBoxPreview from '../components/flashcardBoxPreview'
 import BestCreatorBoxPreview from '../components/bestCreatorBoxPreview'
