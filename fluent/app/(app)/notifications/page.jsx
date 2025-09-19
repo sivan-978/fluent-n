@@ -17,7 +17,7 @@ function notification() {
             <div className="flex flex-col gap-4 ">
                 <h1 className="ml-1 underline underline-offset-8 text-4xl font-bold mt-16 mb-10">Your Notifications</h1>
                 {notifications.map((data, i) => (
-                    <div className="flex bg-slate-700 py-2 px-5 rounded-full justify-between items-center gap-10 w-4/6">
+                    <div key={i} className="flex bg-slate-700 py-2 px-5 rounded-full justify-between items-center gap-10 w-4/6">
                         <h1 key={i} className="text-xl font-medium break-words">{data.message}</h1>
                         <div className=" font-medium flex-shrink-0 whitespace-nowrap text-center text-sm">
                             <p>{data.date}</p>

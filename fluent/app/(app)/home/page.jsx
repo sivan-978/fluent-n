@@ -29,7 +29,7 @@ function home() {
                                 <img src="/icons/streak.png" alt="streak" className='h-12' />
                             </div>
                         </div>
-                        <Link href='/create' className=' mt-7 mr-4 inline-block py-[6px] px-6 bg-blue-600 font-semibold rounded-full text-2xl hover:bg-blue-700'>Create</Link>
+                        <Link href='/create-set' className=' mt-7 mr-4 inline-block py-[6px] px-6 bg-blue-600 font-semibold rounded-full text-2xl hover:bg-blue-700'>Create</Link>
                         <Link href='/create' className='inline-block py-[6px] px-6 bg-blue-400 font-semibold rounded-full text-2xl hover:bg-blue-500'>Learn</Link>
                     </div>
 
