@@ -1,22 +1,19 @@
+"use client";
+
 import Link from "next/link";
 
 
-function flashcardBoxPreview() {
-    const data = [
-        { title: 'The daily words', level: "A1", language: "Spanish", lastView: "2d", cards: "14", completed: "70%" },
-        { title: 'The basic words', level: "A1", language: "Spanish", lastView: "8d", cards: "24", completed: "90%" },
-        { title: 'The school words', level: "A1", language: "Spanish", lastView: "1d", cards: "17", completed: "60%" },
-    ]
+function flashcardBoxPreview({ items = [] }) {
 
     return (
-        <div className='flex gap-5 flex-nowrap overflow-hidden'>
-            {data.map((box, i) => (
+
+        items.map((box) => (
+            <div key={box.id} className="col-span-1">
 
                 <Link
-                    key={i}
-                    href='#'
+                    href={`/library/flashcard-sets/${box.id}`}
                     className='bg-slate-500 flex flex-col gap-6 max-w-[360px] min-w-[360px] w-[360px] max-h-72 h-72 min-h-72 rounded-xl overflow-hidden shadow-[inset_0px_0px_14px_rgba(0,0,0,1)] bg-cover bg-top hover:shadow-[inset_0px_0px_49px_rgba(0,0,0,1)] transition-shadow'
-                    style={{ backgroundImage: `url(${"/icons/boxBg.jpg"})` }}
+                    style={{ backgroundImage: `url(${box.bg})` }}
                 >
                     <div className="h-full flex gap-1 overflow-hidden justify-between">
                         <p className="text-black font-bold text-2xl pt-3 px-3 overflow-hidden overflow-ellipsis break-words">
@@ -31,8 +28,8 @@ function flashcardBoxPreview() {
 
                     <div className='grid grid-cols-1 gap-1'>
                         <div className='text-orange-800 font-semibold flex flex-col text-right px-2 leading-tight'>
-                            <span>{box.cards} cards</span>
-                            <span>Last reviewed {box.lastView} ago</span>
+                            <span>{box.cardsCount} cards</span>
+                            <span>Last reviewed {box.lastView} </span>
                         </div>
 
                         <div className='bg-blue-500 text-center'>
@@ -41,9 +38,9 @@ function flashcardBoxPreview() {
                     </div>
 
                 </Link>
+            </div>
+        ))
 
-            ))}
-        </div>
     )
 }
 export default flashcardBoxPreview
