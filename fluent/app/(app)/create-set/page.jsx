@@ -1,7 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
+import { SidebarProvider } from "@/app/_providers/sidebarProvider";
 import LoggedinHeader from "@/components/loggedinHeader.jsx"
+import SideNav from "@/components/sideNav";
+
 import { useRouter } from "next/navigation";
 import { DndContext, closestCenter, PointerSensor, useSensor, useSensors, } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove, } from "@dnd-kit/sortable";
@@ -117,112 +121,121 @@ export default function createSet() {
 
 
     return (
-        <div className="bg-slate-800 flex flex-col min-h-screen pb-10 ">
-            <header className='flex-shrink-0'>
-                <LoggedinHeader />
-            </header>
+        <SidebarProvider defaultOpen={false}>
+            <div className="bg-slate-800 flex flex-col min-h-screen">
+                <header className='flex-shrink-0'>
+                    <LoggedinHeader />
+                </header>
 
-            <main className="grid grid-cols-1 mt-10 px-10 gap-16">
-
-                <div className="flex justify-between">
-                    <div>
-                        <h2 className="font-medium text-3xl">Create a new flashcard set</h2>
-                    </div>
-
-                    <div className="flex gap-4">
-                        <button className="bg-yellow-600 cursor-pointer font-semibold rounded-full text-2xl py-[6px] px-6 hover:bg-yellow-700">Create</button>
-                        <button className="bg-amber-800 cursor-pointer font-semibold rounded-full text-2xl py-[6px] px-6 hover:bg-amber-900">Create and practice</button>
-                    </div>
-                </div>
-
-                <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-20">
-                    <div className="flex flex-col gap-3 items-center">
-                        <input
-                            type="text"
-                            placeholder="Title"
-                            value={title} onChange={(e) => setTitle(e.target.value)}
-                            className="bg-gray-400 text-black text-2xl px-3 py-2 rounded-lg w-4/5"
-                        />
-                        <input
-                            type="text"
-                            placeholder="Description"
-                            value={description} onChange={(e) => setDescription(e.target.value)}
-                            className="bg-gray-400 text-black text-2xl px-3 py-2 rounded-lg w-4/5"
-                        />
-                    </div>
-
-                    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd} modifiers={[restrictToVerticalAxis,/*only up/down*/ restrictToParentElement,/*stay inside parent container*/ restrictToWindowEdges,/*optional: also clamp to viewport*/]}>
-                        <SortableContext items={cards.map((c) => c.id)} strategy={verticalListSortingStrategy}>
-
-                            <div className="grid grid-cols-1 gap-4">
-                                {cards.map((card, idx) => (
-                                    <SortableCard key={card.id} id={card.id}>
-                                        {({ attributes, listeners }) => (
-                                            <div key={card.id} className="flex flex-col gap-3 px-10 py-4 pb-6 bg-gray-600 text-black text-2xl rounded-xl">
-
-                                                <div className="flex justify-between cursor-grab" {...attributes} {...listeners}>
-                                                    <span className="text-gray-200">{idx + 1}</span>
-
-                                                    <button type="button" onClick={() => removeCard(card.id)}>
-                                                        <img src="/icons/delete.png" alt="delete" className="w-10 bg-gray-400 py-2 px-2 rounded-full cursor-pointer hover:bg-gray-500" />
-                                                    </button>
-                                                </div>
+                <div className='flex flex-1 overflow-hidden'>
+                    <aside className='flex-shrink-0 bg-slate-700 min-h-full'>
+                        <SideNav />
+                    </aside>
 
 
-                                                <div className="flex gap-7">
-                                                    <input
-                                                        type="text"
-                                                        placeholder="Term"
-                                                        value={card.term}
-                                                        onChange={(e) => updateCard(card.id, "term", e.target.value)}
-                                                        className="flex-1 bg-gray-400 rounded-lg py-2 px-3"
-                                                    />
+                    <main className=" grid flex-1 mt-10 px-10 gap-16 pb-10">
 
-                                                    <input
-                                                        type="text"
-                                                        placeholder="Defination"
-                                                        value={card.defination}
-                                                        onChange={(e) => updateCard(card.id, "defination", e.target.value)}
-                                                        className="flex-1 bg-gray-400 rounded-lg py-2 px-3"
-                                                    />
-                                                </div>
-
-                                                <div className="grid grid-cols-2 gap-13 px-3">
-                                                    <span className="text-xl font-medium">Term</span>
-                                                    <span className="text-xl font-medium">Defination</span>
-                                                </div>
-
-                                            </div>
-                                        )}
-                                    </SortableCard>
-                                ))}
+                        <div className="flex justify-between">
+                            <div>
+                                <h2 className="font-medium text-3xl">Create a new flashcard set</h2>
                             </div>
-                        </SortableContext>
-                    </DndContext>
 
-                    <div className="flex justify-center">
-                        <button
-                            type="button"
-                            onClick={addCard}
-                            className="bg-yellow-600 cursor-pointer font-semibold rounded-full text-2xl py-4 px-6 hover:bg-yellow-700"
-                        >
-                            Add a card
-                        </button>
-                    </div>
+                            <div className="flex gap-4">
+                                <button className="bg-yellow-600 cursor-pointer font-semibold rounded-full text-2xl py-[6px] px-6 hover:bg-yellow-700">Create</button>
+                                <button className="bg-amber-800 cursor-pointer font-semibold rounded-full text-2xl py-[6px] px-6 hover:bg-amber-900">Create and practice</button>
+                            </div>
+                        </div>
 
-                    <div className="flex gap-4 justify-end">
-                        <button
-                            type="submit"
-                            onClick={handleCreate}
-                            disabled={!isValid()}
-                            className="bg-yellow-600 cursor-pointer font-semibold rounded-full text-2xl py-[6px] px-6 hover:bg-yellow-700">Create
-                        </button>
-                        <button className="bg-amber-800 cursor-pointer font-semibold rounded-full text-2xl py-[6px] px-6 hover:bg-amber-900">Create and practice</button>
-                    </div>
-                </form>
+                        <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-20">
+                            <div className="flex flex-col gap-3 items-center">
+                                <input
+                                    type="text"
+                                    placeholder="Title"
+                                    value={title} onChange={(e) => setTitle(e.target.value)}
+                                    className="bg-gray-400 text-black text-2xl px-3 py-2 rounded-lg w-4/5"
+                                />
+                                <input
+                                    type="text"
+                                    placeholder="Description"
+                                    value={description} onChange={(e) => setDescription(e.target.value)}
+                                    className="bg-gray-400 text-black text-2xl px-3 py-2 rounded-lg w-4/5"
+                                />
+                            </div>
 
-            </main>
-        </div>
+                            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd} modifiers={[restrictToVerticalAxis,/*only up/down*/ restrictToParentElement,/*stay inside parent container*/ restrictToWindowEdges,/*optional: also clamp to viewport*/]}>
+                                <SortableContext items={cards.map((c) => c.id)} strategy={verticalListSortingStrategy}>
+
+                                    <div className="grid grid-cols-1 gap-4">
+                                        {cards.map((card, idx) => (
+                                            <SortableCard key={card.id} id={card.id}>
+                                                {({ attributes, listeners }) => (
+                                                    <div key={card.id} className="flex flex-col gap-3 px-10 py-4 pb-6 bg-gray-600 text-black text-2xl rounded-xl">
+
+                                                        <div className="flex justify-between cursor-grab" {...attributes} {...listeners}>
+                                                            <span className="text-gray-200">{idx + 1}</span>
+
+                                                            <button type="button" onClick={() => removeCard(card.id)}>
+                                                                <img src="/icons/delete.png" alt="delete" className="w-10 bg-gray-400 py-2 px-2 rounded-full cursor-pointer hover:bg-gray-500" />
+                                                            </button>
+                                                        </div>
+
+
+                                                        <div className="flex gap-7">
+                                                            <input
+                                                                type="text"
+                                                                placeholder="Term"
+                                                                value={card.term}
+                                                                onChange={(e) => updateCard(card.id, "term", e.target.value)}
+                                                                className="flex-1 bg-gray-400 rounded-lg py-2 px-3"
+                                                            />
+
+                                                            <input
+                                                                type="text"
+                                                                placeholder="Defination"
+                                                                value={card.defination}
+                                                                onChange={(e) => updateCard(card.id, "defination", e.target.value)}
+                                                                className="flex-1 bg-gray-400 rounded-lg py-2 px-3"
+                                                            />
+                                                        </div>
+
+                                                        <div className="grid grid-cols-2 gap-13 px-3">
+                                                            <span className="text-xl font-medium">Term</span>
+                                                            <span className="text-xl font-medium">Defination</span>
+                                                        </div>
+
+                                                    </div>
+                                                )}
+                                            </SortableCard>
+                                        ))}
+                                    </div>
+                                </SortableContext>
+                            </DndContext>
+
+                            <div className="flex justify-center">
+                                <button
+                                    type="button"
+                                    onClick={addCard}
+                                    className="bg-yellow-600 cursor-pointer font-semibold rounded-full text-2xl py-4 px-6 hover:bg-yellow-700"
+                                >
+                                    Add a card
+                                </button>
+                            </div>
+
+                            <div className="flex gap-4 justify-end">
+                                <button
+                                    type="submit"
+                                    onClick={handleCreate}
+                                    disabled={!isValid()}
+                                    className="bg-yellow-600 cursor-pointer font-semibold rounded-full text-2xl py-[6px] px-6 hover:bg-yellow-700">Create
+                                </button>
+                                <button className="bg-amber-800 cursor-pointer font-semibold rounded-full text-2xl py-[6px] px-6 hover:bg-amber-900">Create and practice</button>
+                            </div>
+                        </form>
+
+                    </main>
+                </div>
+            </div>
+        </SidebarProvider>
     );
 }
 
@@ -240,25 +253,3 @@ function SortableCard({ id, children }) {
         </div>
     );
 }
-
-
-
-
-//---drag handle: only this element starts the drag
-// function DragHandle({ id }) {
-//     //use a separate usesortable to get handle listeners/attributes for just the icon
-//     const { attributes, listeners } = useSortable({ id });
-
-//     return (
-//         <button
-//             type="button"
-//             {...attributes}
-//             {...listeners}
-//             className="cursor-grab active:cursor-grabbing rounded-full bg-black/40 text-white px-2 py-1"
-//             aria-label="Drag to reorder"
-//             title="drag to reorder"
-//         >
-//             ⋮⋮
-//         </button>
-//     );
-// }

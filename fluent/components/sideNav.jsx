@@ -2,12 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useSidebar } from "@/app/_providers/sidebarProvider";
 
 function sideNav() {
     const pathname = usePathname();
     const inLibrary = pathname.startsWith("/library");
+    const { open } = useSidebar();
+
     return (
-        <aside>
+        <aside className={`transition-all duration-200 ${open ? "w-64" : "w-0"} overflow-hidden`}>
             <nav className='grid w-64 px-5 py-6 '>
 
                 <div className='border-b-2 pb-6 gap-2 grid'>

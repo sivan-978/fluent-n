@@ -1,11 +1,19 @@
+"use client";
+import Link from "next/link";
+import { useSidebar } from "@/app/_providers/sidebarProvider.jsx";
+
 
 export default function loggedinHeader() {
+    const { toggle } = useSidebar();
+
     return (
         <header className="bg-slate-600 flex items-center py-5">
 
             <div className='flex items-center pl-7 gap-3 w-56'>
-                <img src="/icons/menu.png" alt="menu" className='h-8' />
-                <img src="/icons/logo.jpg" alt="logo" className='h-14 rounded-full px-1' />
+                <img src="/icons/menu.png" alt="menu" className='h-8 cursor-pointer' onClick={toggle} />
+                <Link href="/home" className="flex items-center">
+                    <img src="/icons/logo.jpg" alt="logo" className='h-14 w-15 rounded-full px-1' />
+                </Link>
             </div>
 
             <div className='flex flex-1 justify-center'>
