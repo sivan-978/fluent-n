@@ -11,7 +11,7 @@ function flashcardBoxPreview({ items = [] }) {
             <div key={box.id} className="col-span-1">
 
                 <Link
-                    href={`/library/flashcard-sets/${box.id}`}
+                    href={`/flashcard-sets/${box.id}`}
                     className='bg-slate-500 flex flex-col gap-6 max-w-[360px] min-w-[360px] w-[360px] max-h-72 h-72 min-h-72 rounded-xl overflow-hidden shadow-[inset_0px_0px_14px_rgba(0,0,0,1)] bg-cover bg-top hover:shadow-[inset_0px_0px_49px_rgba(0,0,0,1)] transition-shadow'
                     style={{ backgroundImage: `url(${box.bg})` }}
                 >
