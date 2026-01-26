@@ -11,7 +11,7 @@ function sideNav() {
 
     return (
         <aside className={`transition-all duration-200 ${open ? "w-64" : "w-0"} overflow-hidden`}>
-            <nav className='grid w-64 px-5 py-6 '>
+             <nav className='grid w-64 px-5 py-6 '>
 
                 <div className='border-b-2 pb-6 gap-2 grid'>
                     <Link href="/home" className={`hover:bg-slate-600 flex items-center gap-4 pl-4 py-1 rounded-lg 

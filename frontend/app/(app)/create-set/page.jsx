@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { SidebarProvider } from "@/app/_providers/sidebarProvider";
 import LoggedinHeader from "@/components/loggedinHeader.jsx"
 import SideNav from "@/components/sideNav";
 
-import { useRouter } from "next/navigation";
 import { DndContext, closestCenter, PointerSensor, useSensor, useSensors, } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove, } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -20,41 +20,39 @@ export default function createSet() {
     const [mounted, setMounted] = useState(false);
     useEffect(() => setMounted(true), []);
 
+    const [submitted, setSubmitted] = useState(false);
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    //sttate: array of cards
     const [cards, setCards] = useState([
         { id: crypto.randomUUID(), term: "", defination: "" },
         { id: crypto.randomUUID(), term: "", defination: "" },
     ]);
+    const id = crypto.randomUUID();
 
 
     // simple validation: title & description & first card filled
+    const first = cards[0];
     const isValid = () => {
-        if (!title.trim() || !description.trim()) return false;
-        const first = cards[0];
+        if (!title.trim()) return false;
         if (!first) return false;
         return first.term.trim() && first.defination.trim();
     };
 
-
-
     const handleCreate = () => {
+        setSubmitted(true);
+        console.log(submitted)
         if (!isValid()) {
-            alert("Please fill title, description, and at least the first card (term & definition).");
             return;
         }
-
-        const id = crypto.randomUUID();
 
         // shape we’ll store (adapt as you like)
         const setToSave = {
             id,
             title,
             description,
-            level: "A1",            // you can collect these later from UI
-            language: "Spanish",    // ^
+            level: "A1",
+            language: "Spanish",
             cards,
             // for the preview box:
             lastViewISO: null,      // null = never
@@ -65,8 +63,21 @@ export default function createSet() {
         const prev = JSON.parse(localStorage.getItem("flashSets") || "[]");
         localStorage.setItem("flashSets", JSON.stringify([setToSave, ...prev]));
 
-        // go to the list or directly to the set page
+
         router.push("/library/flashcard-sets");
+    };
+
+
+    //remove card by id
+    const removeCard = (id) => {
+        setCards((prev) => prev.filter((c) => c.id !== id));
+    };
+
+    //update card (because term and defination is in object n not single values like title n description)
+    const updateCard = (id, field, value) => {
+        setCards(prev =>
+            prev.map((c) => (c.id === id ? { ...c, [field]: value } : c))
+        );
     };
 
     //add new card
@@ -74,29 +85,14 @@ export default function createSet() {
         setCards((prev) => [
             ...prev,
             { id: crypto.randomUUID(), term: "", defination: "" },
-
         ]);
     };
 
-    //remove card by id
-    const removeCard = (id) => {
-        setCards((prev) => prev.filter((c) => c.id !== id));
-    };
-
-    //update card (when typing in inputs)
-    const updateCard = (id, field, value) => {
-        setCards(prev =>
-            prev.map((c) => (c.id === id ? { ...c, [field]: value } : c))
-        );
-    };
 
     //handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("Flashcards:", cards);
     };
-
-
 
 
     //---dnd-kit sensors (mouse/touch)---
@@ -118,11 +114,9 @@ export default function createSet() {
     if (!mounted) return null;
 
 
-
-
     return (
         <SidebarProvider defaultOpen={false}>
-            <div className="bg-slate-800 flex flex-col min-h-screen">
+            <div className="bg-slate-800 flex flex-col h-screen">
                 <header className='flex-shrink-0'>
                     <LoggedinHeader />
                 </header>
@@ -133,7 +127,7 @@ export default function createSet() {
                     </aside>
 
 
-                    <main className=" grid flex-1 mt-10 px-10 gap-16 pb-10">
+                    <main className=" grid flex-1 mt-10 px-10 gap-16 pb-10  overflow-auto ">
 
                         <div className="flex justify-between">
                             <div>
@@ -141,8 +135,8 @@ export default function createSet() {
                             </div>
 
                             <div className="flex gap-4">
-                                <button className="bg-yellow-600 cursor-pointer font-semibold rounded-full text-2xl py-[6px] px-6 hover:bg-yellow-700">Create</button>
-                                <button className="bg-amber-800 cursor-pointer font-semibold rounded-full text-2xl py-[6px] px-6 hover:bg-amber-900">Create and practice</button>
+                                <button type="submit" onClick={handleCreate} className="bg-yellow-600 cursor-pointer font-semibold rounded-full text-2xl  px-6 max-h-11 hover:bg-yellow-700">Create</button>
+                                <button type="submit" className="bg-amber-800 cursor-pointer font-semibold rounded-full text-2xl py-[6px] px-6 max-h-11 hover:bg-amber-900">Create and practice</button>
                             </div>
                         </div>
 
@@ -150,14 +144,16 @@ export default function createSet() {
                             <div className="flex flex-col gap-3 items-center">
                                 <input
                                     type="text"
-                                    placeholder="Title"
-                                    value={title} onChange={(e) => setTitle(e.target.value)}
-                                    className="bg-gray-400 text-black text-2xl px-3 py-2 rounded-lg w-4/5"
+                                    placeholder={`${submitted && !title.trim() ? "Please enter a Title to create the set." : "Term"}`}
+                                    value={title}
+                                    onChange={(e) => setTitle(e.target.value)}
+                                    className={`bg-gray-400 text-black text-2xl px-3 py-2 rounded-lg w-4/5 ${submitted && !title.trim() ? "border-red-500 border-2 placeholder-gray-900 placeholder:font-medium" : "border-2"}`}
                                 />
                                 <input
                                     type="text"
                                     placeholder="Description"
-                                    value={description} onChange={(e) => setDescription(e.target.value)}
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
                                     className="bg-gray-400 text-black text-2xl px-3 py-2 rounded-lg w-4/5"
                                 />
                             </div>
@@ -186,7 +182,7 @@ export default function createSet() {
                                                                 placeholder="Term"
                                                                 value={card.term}
                                                                 onChange={(e) => updateCard(card.id, "term", e.target.value)}
-                                                                className="flex-1 bg-gray-400 rounded-lg py-2 px-3"
+                                                                className={`flex-1 bg-gray-400 rounded-lg py-2 px-3 ${submitted &&  idx === 0 && !card.term.trim() ? "border-red-500 border-2 placeholder-gray-900 placeholder:font-medium" : ""}`}
                                                             />
 
                                                             <input
@@ -194,7 +190,7 @@ export default function createSet() {
                                                                 placeholder="Defination"
                                                                 value={card.defination}
                                                                 onChange={(e) => updateCard(card.id, "defination", e.target.value)}
-                                                                className="flex-1 bg-gray-400 rounded-lg py-2 px-3"
+                                                                className={`flex-1 bg-gray-400 rounded-lg py-2 px-3 ${submitted &&  idx === 0 && !card.defination.trim() ? "border-red-500 border-2 placeholder-gray-900 placeholder:font-medium" : ""}`}
                                                             />
                                                         </div>
 
@@ -225,7 +221,6 @@ export default function createSet() {
                                 <button
                                     type="submit"
                                     onClick={handleCreate}
-                                    disabled={!isValid()}
                                     className="bg-yellow-600 cursor-pointer font-semibold rounded-full text-2xl py-[6px] px-6 hover:bg-yellow-700">Create
                                 </button>
                                 <button className="bg-amber-800 cursor-pointer font-semibold rounded-full text-2xl py-[6px] px-6 hover:bg-amber-900">Create and practice</button>

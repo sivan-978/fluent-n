@@ -33,6 +33,8 @@ function home() {
                         <Link href='/create' className='inline-block py-[6px] px-6 bg-blue-400 font-semibold rounded-full text-2xl hover:bg-blue-500'>Learn</Link>
                     </div>
 
+                    
+
                     <div className='grid grid-cols-1 gap-2'>
                         <p className='font-semibold text-2xl'>Continue your flashcards set</p>
                         <div className="flex justify-end">
@@ -44,8 +46,6 @@ function home() {
                             <FlashcardBoxPreview />
                         </div>
                     </div>
-
-
 
 
                     <div className='grid grid-cols-1 gap-2'>
