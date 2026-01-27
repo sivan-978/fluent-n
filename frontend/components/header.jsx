@@ -1,38 +1,45 @@
+import Link from "next/link";
+
 
 const NAV_LINKS = [
-    { name: 'Home', href: '/home' },
-    { name: 'Create', href: '/create' },
-    { name: 'Study', href: '/study' },
+    { name: 'Library', href: '/sets' },
+    { name: 'Features', href: '/features' },
+    { name: 'Pricing', href: '/pricing' },
 ]
 
-function header() {
+function Header() {
     return (
-        <header className='bg-blue-500 flex justify-between py-2'>
+        <header className='bg-[#FFF5E6] flex justify-between py-2'>
 
-            <div className='flex gap-1 items-center pl-16 py-2'>
-                <img className='h-16 rounded-full' src="/icons/logo.jpg" alt="logo" />
-                <p className='text-4xl font-bold text-gray-50'>Fleunt</p>
-            </div>
+            <Link href="/" className='flex gap-1 items-center ml-8 py-2'>
+                <img className='h-14 rounded-full' src="/icons/graduation.png" alt="Fluent logo"/>
+                <span className='text-2xl font-black text-[#965c09]'>Fleunt</span>
+            </Link>
 
             <nav className='flex gap-6 justify-center items-center'>
                 {NAV_LINKS.map(link => (
-                    <a
+                    <Link
                         key={link.name}
                         href={link.href}
-                        className='hover:text-gray-300 font-semibold text-[22px] transition-colors'
+                        className='text-[#965c09]/80 font-semibold text-[16px] hover:text-[#fc6b03] transition-colors'
                     >
                         {link.name}
-                    </a>
+                    </Link>
                 ))}
             </nav>
 
-            <div className='flex gap-1 flex-col items-center justify-center px-10'>
-                <a href="/signup" className='font-semibold text-lg bg-red-600 rounded-full py-1 px-2 hover:text-gray-200 hover:bg-red-700 transition-colors' >SignUp</a>
-                <a href="/login" className='font-semibold text-lg bg-yellow-500 rounded-full py-1 px-2 hover:text-gray-200 hover:bg-yellow-600 transition-colors'>LogIn</a>
+            <div className='flex items-center gap-4 px-7'>
+                <Link href="/login">
+                    <button className='px-6 py-2.5 font-bold text-[#965c09] hover:text-[#fc6b03] transition-colors'>Log In</button>
+                </Link>
+
+                <Link href="/register">
+                    <button className='px-6 py-2.5 bg-[#fc6b03] text-white font-bold rounded-full shadow-lg hover:bg-[#fd7b1a] hover:-translate-y-0.5 transition-all' >Get started</button>
+                </Link>
             </div>
 
         </header>
     )
 }
 
-export default header
+export default Header
