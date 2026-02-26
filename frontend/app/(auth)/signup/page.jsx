@@ -1,197 +1,178 @@
 "use client";
 
-import { useState } from 'react'
+import { useState } from "react";
+import { ArrowLeft, Mail, Lock, GraduationCap, Sparkles, Star, ArrowRight, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { EyeIcon, EyeSlashIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
 
-export default function Signup() {
-    const pathname = usePathname();
-    const [show, setShow] = useState(false)
+export default function SignupPage() {
+	const [showPassword, setShowPassword] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		setIsLoading(true);
+		setTimeout(() => {
+			setIsLoading(false);
+		}, 1500);
+	};
 
-    /*const navigate = useNavigate()
-    const [error, setError] = useState('')
-  
-    const handleChange = e => {
-      setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
-      setError('')
-    }
-  
-    const handleSubmit = e => {
-      e.preventDefault()
-      if (form.password !== form.confirm) {
-        setError('Passwords do not match')
-        return
-      }
-      // TODO: hook up your auth API here
-      console.log('Signing up with', form)
-      navigate('/') // redirect home on success
-    }*/
+	return (
+		<div className="w-full max-w-5xl grid lg:grid-cols-2 bg-white rounded-[3rem] shadow-2xl overflow-hidden border-2 border-[#fc6b03]/10 relative z-10">
 
-    return (
-        
-        <div className='w-4/5 mx-auto mt-8 '>
+			{/* left side */}
+			<div className="hidden lg:flex flex-col justify-between py-9 px-12 bg-gradient-to-br from-[#fc6b03] to-[#965c09] text-white relative overflow-hidden">
+				<div className="absolute inset-0 opacity-10">
+					<div className="grid grid-cols-6 gap-8 p-12">
+						{Array.from({ length: 24 }).map((_, i) => (
+							<Star key={i} className="w-8 h-8 rotate-12" />
+						))}
+					</div>
+				</div>
 
-            <div className='flex gap-6 mt-3 mb-7'>
-
-                <Link
-                    href="/signup"
-                    className={`text-2xl font-bold ${pathname === "/signup"
-                        ? "underline underline-offset-8 text-black"
-                        : "text-gray-500"
-                        }`
-                    }
-                >
-                    Sign up
-                </Link>
-
-                <Link
-                    href="/login"
-                    className={`text-2xl font-bold ${pathname === "/login"
-                        ? "underline underline-offset-8 text-black"
-                        : "text-gray-500"
-                        }`
-                    }
-                >
-                    Log in
-                </Link>
-                <Link
-                    href="/"
-                    className="fixed top-4 right-6 bg-white rounded-full p-1 shadow hover:shadow-md z-50"
-                >
-                    <XMarkIcon className="h-7 text-gray-700" />
-                </Link>
-            </div>
-
-            <div className=''>
-                <button
-                    type="button"
-                    className="flex items-center justify-center border border-gray-700 w-full bg-white text-gray-800 py-3 rounded-full font-semibold hover:bg-gray-100 transition"
-                >
-                    <img className='h-5' src="/icons/google-logo.png" alt="logo" />
-                    <span className='text-gray-700 font-medium pl-2'>
-                        Continue with Google
-                    </span>
-                </button>
-            </div>
-
-            <div className="flex items-center w-full my-6 ">
-                <hr className="flex-grow border-gray-400" />
-                <span className="px-4 text-gray-500">or with email</span>
-                <hr className="flex-grow border-gray-400" />
-            </div>
-
-
-            <div className=''>
-                <form className=' grid text-black shadow-[0_15px_50px_-12px_rgba(0,0,0,0.45)] gap-6 py-6 px-6' action="">
-
-                    <label htmlFor="">
-                        <span className='text-gray-600 font-medium text-xl'>Email</span>
-                        <input
-                            type="email"
-                            placeholder='user@email.com'
-                            className="bg-gray-100 px-3 py-2 block border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                        />
-                    </label>
-
-                    <label htmlFor="">
-                        <span className='text-gray-600 font-medium text-xl'>Username</span>
-                        <input
-                            type="name"
-                            placeholder='Andrew23'
-                            className="bg-gray-100 px-3 py-2 block border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                        />
-                    </label>
-
-                    <label htmlFor="" className='relative'>
-                        <span className='text-gray-600 font-medium text-xl'>Password</span>
-                        <input
-                            type={show ? 'text' : 'password'}
-                            placeholder='*******'
-                            className="bg-gray-100 px-3 py-2 block border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                        />
-                        <button
-                            type="button"
-                            onClick={() => setShow(s => !s)}
-                            className="absolute top-7 bottom-0 right-0 px-3 flex items-center text-gray-500 hover:text-gray-700"
-                        >
-                            {show
-                                ? <EyeIcon className="h-5 w-5" />
-                                : <EyeSlashIcon className="h-5 w-5" />
-                            }
-                        </button>
-                    </label>
-
-                    <label htmlFor="" className='relative'>
-                        <span className='text-gray-600 font-medium text-xl'>Confirm password</span>
-                        <input
-                            type={show ? 'text' : 'password'}
-                            placeholder='*******'
-                            className="bg-gray-100 px-3 py-2 block border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                        />
-                        <button
-                            type="button"
-                            onClick={() => setShow(s => !s)}
-                            className="absolute top-7 bottom-0 right-0 px-3 flex items-center text-gray-500 hover:text-gray-700"
-                        >
-                            {show
-                                ? <EyeIcon className="h-5 w-5" />
-                                : <EyeSlashIcon className="h-5 w-5" />
-                            }
-                        </button>
-                    </label>
-
-                    <div className='mt-3'>
-                        <label className="flex items-start space-x-3">
-                            <input
-                                type="checkbox"
-                                name="promos"
-                                onChange={() => { }}
-                                className="h-5 w-5 text-blue-600 focus:ring-blue-500"
-                            />
-                            <span className="text-gray-700">
-                                I want to receive news, promotional emails, updates and tips on how to use Fluent
-                            </span>
-                        </label>
-
-                        <label className="flex items-start space-x-3">
-                            <input
-                                type="checkbox"
-                                name="terms"
-                                onChange={() => { }}
-                                className="h-5 w-5 text-blue-600 focus:ring-blue-500"
-                            />
-                            <span className="text-gray-700">
-                                I accept Fluent's{' '}
-                                <a href="/terms" className="text-blue-600 hover:underline">
-                                    Terms of Service
-                                </a>{' '}
-                                and{' '}
-                                <a href="/privacy" className="text-blue-600 hover:underline">
-                                    Privacy Policy
-                                </a>
-                            </span>
-                        </label>
+				<div className="relative z-10">
+					<div className="flex items-center gap-1 text-gray-200 hover:text-white mb-10">
+                        <ArrowLeft className="w-5 h-5" />
+                        <Link href='/' className="font-semibold " >Back to home</Link>
                     </div>
 
-                    <button
-                        type="submit"
-                        className="w-full bg-blue-600 text-white py-3 rounded-full font-semibold hover:bg-blue-700 transition"
-                    >
-                        Sign UP
-                    </button>
+					<div className="flex items-center gap-3 mb-8">
+						<div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-lg transform -rotate-6">
+							<GraduationCap className="text-[#fc6b03] w-8 h-8" />
+						</div>
+						<span className="text-4xl font-black tracking-tight"> Fluent </span>
+					</div>
 
-                    <Link
-                        href="/login"
-                        className="text-center border border-gray-700 w-full bg-white text-gray-800 py-3 rounded-full font-semibold hover:bg-gray-100 transition"
-                    >
-                        Already have an account? Log in
-                    </Link>
+					<h2 className="text-5xl font-black mb-6 leading-tight">
+						Start your journey today!
+					</h2>
+					<p className="text-xl text-white/90 leading-relaxed mb-8 max-w-md">
+						Join thousands of students mastering new languages through fun and effective practice.
+					</p>
+				</div>
 
-                </form>
-            </div>
-        </div>
-    )
+				<div className="relative z-10 bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+					<div className="flex items-center gap-4 mb-4">
+						<div className="w-12 h-12 bg-[#ffe8cc] rounded-full flex items-center justify-center shadow-inner">
+							<Sparkles className="text-[#fc6b03] w-6 h-6" />
+						</div>
+						<div>
+							<div className="font-bold text-lg">Daily Tip</div>
+							<div className="text-white/70 text-sm italic">
+								"Consistency is the secret to fluency."
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			{/* right side */}
+			<div className="py-9 px-12 flex flex-col justify-center">
+				<div className="mb-10">
+					<h1 className="text-4xl font-black text-[#965c09] mb-3">
+						Create Account
+					</h1>
+					<p className="text-[#965c09]/60 font-medium">
+						Join the family and start learning for free.
+					</p>
+				</div>
+
+				<form onSubmit={handleSubmit} className="space-y-6">
+
+					{/* full name */}
+					<div className="space-y-2">
+						<label className="text-sm font-bold text-[#965c09] uppercase tracking-wider ml-1">
+							Full Name
+						</label>
+						<div className="relative group">
+							<Star className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-[#965c09]/40" />
+							<input
+								type="text"
+								required
+								placeholder="Jane Doe"
+								className="w-full bg-[#fff5e6] border-2 border-[#fc6b03]/10 focus:border-[#fc6b03] outline-none rounded-2xl py-4 pl-14 pr-6 font-bold text-[#965c09] placeholder:text-[#965c09]/30 transition-all"
+							/>
+						</div>
+					</div>
+
+					{/* email */}
+					<div className="space-y-2">
+						<label className="text-sm font-bold text-[#965c09] uppercase tracking-wider ml-1">
+							Email Address
+						</label>
+						<div className="relative group">
+							<Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-[#965c09]/40" />
+							<input
+								type="email"
+								required
+								placeholder="hello@fluent.com"
+								className="w-full bg-[#fff5e6] border-2 border-[#fc6b03]/10 focus:border-[#fc6b03] outline-none rounded-2xl py-4 pl-14 pr-6 font-bold text-[#965c09] placeholder:text-[#965c09]/30 transition-all"
+							/>
+						</div>
+					</div>
+
+					{/* password */}
+					<div className="space-y-2">
+						<label className="text-sm font-bold text-[#965c09] uppercase tracking-wider ml-1">
+							Password
+						</label>
+
+						<div className="relative group">
+							<Lock className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-[#965c09]/40" />
+							<input
+								type={showPassword ? "text" : "password"}
+								required
+								placeholder="••••••••"
+								className="w-full bg-[#fff5e6] border-2 border-[#fc6b03]/10 focus:border-[#fc6b03] outline-none rounded-2xl py-4 pl-14 pr-14 font-bold text-[#965c09] placeholder:text-[#965c09]/30 transition-all"
+							/>
+							<button
+								type="button"
+								onClick={() => setShowPassword(!showPassword)}
+								className="absolute right-5 top-1/2 -translate-y-1/2 text-[#965c09]/40 hover:text-[#965c09]"
+							>
+								{showPassword ? (
+									<EyeOff className="w-5 h-5" />
+								) : (
+									<Eye className="w-5 h-5" />
+								)}
+							</button>
+						</div>
+
+						<p className="text-xs text-[#965c09]/50 ml-1 font-medium">
+							Password must be at least 8 characters long.
+						</p>
+					</div>
+
+
+					{/* submit */}
+					<button
+						type="submit"
+						disabled={isLoading}
+						className="w-full py-5 bg-gradient-to-r from-[#fc6b03] to-[#965c09] text-white text-xl font-black rounded-2xl shadow-xl hover:shadow-2xl hover:scale-[1.01] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed group"
+					>
+						{isLoading ? (
+							<div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
+						) : (
+							<>
+								Get Started
+								<ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+							</>
+						)}
+					</button>
+				</form>
+				
+				<div className="mt-10 text-center">
+                    <p className="text-[#965c09]/60 font-medium">Already have an account? <Link href='/login' className="font-bold text-[#fc6b03] hover:underline">Sign in</Link> </p>
+                </div>
+
+
+				<div className="mt-10 pt-6 border-t border-[#fc6b03]/40 text-center">
+					<p className="text-xs text-[#965c09]/40 font-medium leading-relaxed">
+						By continuing, you agree to Fluent's <br className="hidden sm:block" />
+						<Link href='/terms&service' className="underline">Terms of Service</Link> and <Link href='/privacy' className="underline">Privacy Policy</Link>.
+					</p>
+				</div>
+			</div>
+		</div>
+	);
 }

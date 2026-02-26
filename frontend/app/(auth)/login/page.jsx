@@ -1,135 +1,149 @@
 "use client";
 
-import { useState } from 'react'
+import { useState } from "react";
+import { Mail, Lock, ArrowLeft, GraduationCap, Sparkles, Star, ArrowRight, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { EyeIcon, EyeSlashIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
+export default function LoginPage() {
+    const [showPassword, setShowPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
-export default function Login() {
-    const pathname = usePathname();
-    const [show, setShow] = useState(false)
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setIsLoading(true);
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 1500);
+    };
 
     return (
+        <div className="w-full max-w-5xl grid lg:grid-cols-2 bg-white rounded-[3rem] shadow-2xl overflow-hidden border-2 border-[#fc6b03]/10 relative z-10">
 
-        <div className='w-4/5 mx-auto mt-8 '>
-            <div className='flex gap-6 mt-3 mb-7'>
+            {/* Left Side */}
+            <div className="hidden lg:flex flex-col justify-between p-12 bg-gradient-to-br from-[#fc6b03] to-[#965c09] text-white relative overflow-hidden">
+                <div className="absolute inset-0 opacity-10">
+                    <div className="grid grid-cols-6 gap-8 p-12">
+                        {Array.from({ length: 24 }).map((_, i) => (
+                            <Star key={i} className="w-8 h-8 rotate-12" />
+                        ))}
+                    </div>
+                </div>
 
-                <Link
-                    href="/signup"
-                    className={`text-2xl font-bold ${pathname === "/signup"
-                        ? "underline underline-offset-8 text-black"
-                        : "text-gray-500"
-                        }`
-                    }
-                >
-                    Sign up
-                </Link>
+                <div className="relative z-10">
 
-                <Link
-                    href="/login"
-                    className={`text-2xl font-bold ${pathname === "/login"
-                        ? "underline underline-offset-8 text-black"
-                        : "text-gray-500"
-                        }`
-                    }
-                >
-                    Log in
-                </Link>
-                <Link
-                    href="/"
-                    className="fixed top-4 right-6 bg-white rounded-full p-1 shadow hover:shadow-md z-50"
-                >
-                    <XMarkIcon className="h-7 text-gray-700" />
-                </Link>
-            </div>
-
-            <div className=''>
-                <button
-                    type="button"
-                    className="flex items-center justify-center border border-gray-700 w-full bg-white text-gray-800 py-3 rounded-full font-semibold hover:bg-gray-100 transition"
-                >
-                    <img className='h-5' src="/icons/google-logo.png" alt="logo" />
-                    <span className='text-gray-700 font-medium pl-2'>
-                        Log in with Google
-                    </span>
-                </button>
-            </div>
-
-            <div className="flex items-center w-full my-6 ">
-                <hr className="flex-grow border-gray-400" />
-                <span className="px-4 text-gray-500">or with email</span>
-                <hr className="flex-grow border-gray-400" />
-            </div>
-
-
-            <div className=''>
-                <form className=' grid text-black shadow-[0_15px_50px_-12px_rgba(0,0,0,0.45)] gap-6 py-8 px-7' action="">
-
-                    <label htmlFor="">
-                        <span className='text-gray-600 font-medium text-xl'>Email</span>
-                        <input
-                            type="email"
-                            placeholder='Email or Username'
-                            className="bg-gray-100 px-3 py-2 block border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                        />
-                    </label>
-
-
-                    <label htmlFor="" className='relative'>
-                        <span className='text-gray-600 font-medium text-xl'>Password</span>
-                        <Link href="/forgot-password">
-                            <span className='text-sm text-blue-600 font-medium absolute bottom-11 right-0'>Forgot password</span>
-                        </Link>
-                        <input
-                            type={show ? 'text' : 'password'}
-                            placeholder='*******'
-                            className="bg-gray-100 px-3 py-2 block border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                        />
-                        <button
-                            type="button"
-                            onClick={() => setShow(s => !s)}
-                            className="absolute top-7 bottom-0 right-0 px-3 flex items-center text-gray-500 hover:text-gray-700"
-                        >
-                            {show
-                                ? <EyeIcon className="h-5 w-5" />
-                                : <EyeSlashIcon className="h-5 w-5" />
-                            }
-                        </button>
-                    </label>
-
-
-                    <div className='mt-3 text-center'>
-                        <span className="text-gray-500 text-sm">
-                            By clicking Log in, you accept Fluent's{' '}
-                            <a href="/terms" className="text-blue-600 hover:underline">
-                                Terms of Service
-                            </a>{' '}
-                            and{' '}
-                            <a href="/privacy" className="text-blue-600 hover:underline">
-                                Privacy Policy
-                            </a>
-                        </span>
+                    <div className="flex items-center gap-1 text-gray-200 hover:text-white mb-10">
+                        <ArrowLeft className="w-5 h-5" />
+                        <Link href='/' className="font-semibold " >Back to home</Link>
+                    </div>
+                        
+                    <div className="flex items-center gap-3 mb-8">
+                        <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-lg transform -rotate-6">
+                            <GraduationCap className="text-[#fc6b03] w-8 h-8" />
+                        </div>
+                        <span className="text-3xl font-black tracking-tight">Fluent</span>
                     </div>
 
+                    <h2 className="text-5xl font-black mb-6 leading-tight">
+                        Welcome back, learner!
+                    </h2>
+                    <p className="text-xl text-white/90 leading-relaxed mb-8 max-w-md">
+                        Your flashcards and AI tutor are waiting. Let's keep that streak alive!
+                    </p>
+                </div>
+
+                <div className="relative z-10 bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+                    <div className="flex items-center gap-4 mb-4">
+                        <div className="w-12 h-12 bg-[#ffe8cc] rounded-full flex items-center justify-center shadow-inner">
+                            <Sparkles className="text-[#fc6b03] w-6 h-6" />
+                        </div>
+                        <div>
+                            <div className="font-bold text-lg">Daily Tip</div>
+                            <div className="text-white/70 text-sm italic">
+                                "Consistency is the secret to fluency."
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Right Side */}
+            <div className="p-12 lg:p-20 flex flex-col justify-center">
+                <div className="mb-10">
+                    <h1 className="text-4xl font-black text-[#965c09] mb-3">
+                        Sign In
+                    </h1>
+                    <p className="text-[#965c09]/60 font-medium">
+                        Glad to see you again! Please enter your details.
+                    </p>
+                </div>
+
+                <form onSubmit={handleSubmit} className="space-y-6">
+
+                    {/* Email */}
+                    <div className="space-y-2">
+                        <label className="text-sm font-bold text-[#965c09] uppercase tracking-wider ml-1">
+                            Email Address
+                        </label>
+                        <div className="relative group">
+                            <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-[#965c09]/40" />
+                            <input
+                                type="email"
+                                required
+                                placeholder="hello@lingospark.com"
+                                className="w-full bg-[#fff5e6] border-2 border-[#fc6b03]/10 focus:border-[#fc6b03] outline-none rounded-2xl py-4 pl-14 pr-6 font-bold text-[#965c09] placeholder:text-[#965c09]/30 transition-all"
+                            />
+                        </div>
+                    </div>
+
+                    {/* Password */}
+                    <div className="space-y-2">
+                        <div className="flex justify-between items-center ml-1">
+                            <label className="text-sm font-bold text-[#965c09] uppercase tracking-wider">
+                                Password
+                            </label>
+                            <button type="button" className="text-xs font-bold text-[#fc6b03] hover:underline">
+                                Forgot Password?
+                            </button>
+                        </div>
+                        <div className="relative group">
+                            <Lock className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-[#965c09]/40" />
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                required
+                                placeholder="••••••••"
+                                className="w-full bg-[#fff5e6] border-2 border-[#fc6b03]/10 focus:border-[#fc6b03] outline-none rounded-2xl py-4 pl-14 pr-14 font-bold text-[#965c09] placeholder:text-[#965c09]/30 transition-all"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-5 top-1/2 -translate-y-1/2 text-[#965c09]/40 hover:text-[#965c09]"
+                            >
+                                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Submit */}
                     <button
                         type="submit"
-                        className="w-full bg-blue-600 text-white py-3 rounded-full font-semibold hover:bg-blue-700 transition"
+                        disabled={isLoading}
+                        className="w-full py-5 bg-gradient-to-r from-[#fc6b03] to-[#965c09] text-white text-xl font-black rounded-2xl shadow-xl hover:shadow-2xl hover:scale-[1.01] transition-all flex items-center justify-center gap-3"
                     >
-                        Log in
+                        {isLoading ? (
+                            <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
+                        ) : (
+                            <>
+                                Sign In
+                                <ArrowRight className="w-6 h-6" />
+                            </>
+                        )}
                     </button>
-
-                    <Link
-                        href="/signup"
-                        className=" text-center border border-gray-700 w-full bg-white text-gray-800 py-3 rounded-full font-semibold hover:bg-gray-100 transition"
-                    >
-                        New to Fluent? Sign up
-                    </Link>
-
                 </form>
+
+                <div className="mt-10 text-center">
+                    <p className="text-[#965c09]/60 font-medium">Don't have an account yet? <Link href='/signup' className="font-bold text-[#fc6b03] hover:underline">Create account</Link> </p>
+                </div>
             </div>
         </div>
-
-
-    )
+    );
 }
