@@ -57,10 +57,10 @@ source venv/bin/activate
 pip install -r requirements.txt
 
 5. Create PostgreSQL database:
-CREATE DATABASE flashcards_db;
+CREATE DATABASE fluent;
 
 6. Create .env file:
-DATABASE_URL=postgresql://postgres:yourpassword@localhost:5432/flashcards_db
+DATABASE_URL=postgresql://postgres:yourpassword@localhost:5432/fluent
 
 7. Run server:
 uvicorn app.main:app --reload
@@ -78,7 +78,7 @@ psql -U postgres
 Enter the password you set during installation.
 
 ### Create Database
-CREATE DATABASE flashcards_db;
+CREATE DATABASE fluent;
 
 ### List Databases
 \l
@@ -98,3 +98,15 @@ Win + R → services.msc
 
 Look for:
 postgresql-x64-16
+
+____________________________________________________________________________________________________
+____________________________________________________________________________________________________
+## PostgreSQL Commands
+
+1. Start the PostgreSQL CLI: psql -U postgres
+2. List all databases:\l
+3. Connect to a database: \c fluent
+4. List all tables: \dt
+5. Describe a table (show table structure): \d users
+6. Shows all rows stored in the table: SELECT * FROM users;
+7. Exit PostgreSQL: \q
