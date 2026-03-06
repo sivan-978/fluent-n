@@ -3,17 +3,37 @@
 import { useState } from "react";
 import { Mail, Lock, ArrowLeft, GraduationCap, Sparkles, Star, ArrowRight, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
+import { loginUser } from "@/lib/auth";
+import { saveToken } from "@/lib/token";
+
 
 export default function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleSubmit = (e) => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-        setTimeout(() => {
+        setError("");
+
+        try {
+            const data = await loginUser(email, password);
+
+            // store JWT token
+            saveToken(data.access_token);
+
+            // redirect after login
+            window.location.href = "/dashboard";
+
+        } catch (err) {
+            setError(err.message);
+        } finally {
             setIsLoading(false);
-        }, 1500);
+        }
     };
 
     return (
@@ -90,6 +110,8 @@ export default function LoginPage() {
                                 type="email"
                                 required
                                 placeholder="hello@lingospark.com"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 className="w-full bg-[#fff5e6] border-2 border-[#fc6b03]/10 focus:border-[#fc6b03] outline-none rounded-2xl py-4 pl-14 pr-6 font-bold text-[#965c09] placeholder:text-[#965c09]/30 transition-all"
                             />
                         </div>
@@ -111,6 +133,8 @@ export default function LoginPage() {
                                 type={showPassword ? "text" : "password"}
                                 required
                                 placeholder="••••••••"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                                 className="w-full bg-[#fff5e6] border-2 border-[#fc6b03]/10 focus:border-[#fc6b03] outline-none rounded-2xl py-4 pl-14 pr-14 font-bold text-[#965c09] placeholder:text-[#965c09]/30 transition-all"
                             />
                             <button
@@ -122,6 +146,11 @@ export default function LoginPage() {
                             </button>
                         </div>
                     </div>
+
+
+                    {error && (
+                        <p className="text-red-500 text-sm font-medium">{error}</p>
+                    )}
 
                     {/* Submit */}
                     <button

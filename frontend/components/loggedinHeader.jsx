@@ -11,7 +11,7 @@ export default function loggedinHeader() {
 
             <div className='flex items-center pl-7 gap-3 w-56'>
                 <img src="/icons/menu.png" alt="menu" className='h-8 cursor-pointer' onClick={toggle} />
-                <Link href="/home" className="flex items-center">
+                <Link href="/dashboard" className="flex items-center">
                     <img src="/icons/logo.jpg" alt="logo" className='h-14 w-15 rounded-full px-1' />
                 </Link>
             </div>

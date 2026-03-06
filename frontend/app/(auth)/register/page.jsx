@@ -3,18 +3,33 @@
 import { useState } from "react";
 import { ArrowLeft, Mail, Lock, GraduationCap, Sparkles, Star, ArrowRight, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
-
+import { registerUser } from "@/lib/auth";
 
 export default function SignupPage() {
 	const [showPassword, setShowPassword] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 
-	const handleSubmit = (e) => {
+	const [email, setEmail] = useState("");
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
+	const [error, setError] = useState("");
+
+
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setIsLoading(true);
-		setTimeout(() => {
+		setError("");
+
+		try {
+			await registerUser(email, username, password);
+
+			// redirect to login after signup
+			window.location.href = "/login";
+		} catch (err) {
+			setError(err.message);
+		} finally {
 			setIsLoading(false);
-		}, 1500);
+		}
 	};
 
 	return (
@@ -90,6 +105,8 @@ export default function SignupPage() {
 								type="text"
 								required
 								placeholder="Jane Doe"
+								value={username}
+								onChange={(e) => setUsername(e.target.value)}
 								className="w-full bg-[#fff5e6] border-2 border-[#fc6b03]/10 focus:border-[#fc6b03] outline-none rounded-2xl py-4 pl-14 pr-6 font-bold text-[#965c09] placeholder:text-[#965c09]/30 transition-all"
 							/>
 						</div>
@@ -106,6 +123,8 @@ export default function SignupPage() {
 								type="email"
 								required
 								placeholder="hello@fluent.com"
+								value={email}
+								onChange={(e) => setEmail(e.target.value)}
 								className="w-full bg-[#fff5e6] border-2 border-[#fc6b03]/10 focus:border-[#fc6b03] outline-none rounded-2xl py-4 pl-14 pr-6 font-bold text-[#965c09] placeholder:text-[#965c09]/30 transition-all"
 							/>
 						</div>
@@ -123,6 +142,8 @@ export default function SignupPage() {
 								type={showPassword ? "text" : "password"}
 								required
 								placeholder="••••••••"
+								value={password}
+								onChange={(e) => setPassword(e.target.value)}
 								className="w-full bg-[#fff5e6] border-2 border-[#fc6b03]/10 focus:border-[#fc6b03] outline-none rounded-2xl py-4 pl-14 pr-14 font-bold text-[#965c09] placeholder:text-[#965c09]/30 transition-all"
 							/>
 							<button
@@ -142,7 +163,11 @@ export default function SignupPage() {
 							Password must be at least 8 characters long.
 						</p>
 					</div>
+					
 
+					{error && (
+						<p className="text-red-500 text-sm font-medium">{error}</p>
+					)}
 
 					{/* submit */}
 					<button

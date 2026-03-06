@@ -14,8 +14,8 @@ function sideNav() {
              <nav className='grid w-64 px-5 py-6 '>
 
                 <div className='border-b-2 pb-6 gap-2 grid'>
-                    <Link href="/home" className={`hover:bg-slate-600 flex items-center gap-4 pl-4 py-1 rounded-lg 
-                        ${pathname === "/home" ? "bg-slate-600" : ""}`}
+                    <Link href="/dashboard" className={`hover:bg-slate-600 flex items-center gap-4 pl-4 py-1 rounded-lg 
+                        ${pathname === "/dashboard" ? "bg-slate-600" : ""}`}
                     >
                         <img src="/icons/home.png" alt="Home" className='h-8 w-8' />
                         <p className='font-semibold'>Home</p>
