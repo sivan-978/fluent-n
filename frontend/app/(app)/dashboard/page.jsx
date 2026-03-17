@@ -4,6 +4,9 @@ import LoggedinHeader from "@/components/loggedinHeader.jsx"
 import SideNav from "@/components/sideNav.jsx"
 
 
+
+
+
 function home() {
     return (
         <div className='flex flex-col h-screen'>
