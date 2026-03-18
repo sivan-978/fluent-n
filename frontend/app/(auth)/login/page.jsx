@@ -170,7 +170,7 @@ export default function LoginPage() {
                 </form>
 
                 <div className="mt-10 text-center">
-                    <p className="text-[#965c09]/60 font-medium">Don't have an account yet? <Link href='/signup' className="font-bold text-[#fc6b03] hover:underline">Create account</Link> </p>
+                    <p className="text-[#965c09]/60 font-medium">Don't have an account yet? <Link href='/register' className="font-bold text-[#fc6b03] hover:underline">Create account</Link> </p>
                 </div>
             </div>
         </div>
