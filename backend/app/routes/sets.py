@@ -27,3 +27,17 @@ def create_set(
     db.refresh(new_set)
 
     return new_set
+
+
+@router.get("")
+def get_my_sets(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    sets = (
+        db.query(FlashcardSet)
+        .filter(FlashcardSet.owner_id == current_user.id)
+        .all()
+    )
+
+    return sets
