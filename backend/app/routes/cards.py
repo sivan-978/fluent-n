@@ -41,3 +41,29 @@ def create_card(
     db.refresh(new_card)
 
     return new_card
+
+
+@router.get("/{set_id}/cards")
+def get_cards(
+    set_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    # check set exists
+    flashcard_set = db.query(FlashcardSet).filter(
+        FlashcardSet.id == set_id
+    ).first()
+
+    if not flashcard_set:
+        raise HTTPException(status_code=404, detail="Set not found")
+
+    # ownership protection
+    if flashcard_set.owner_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Not allowed")
+
+    # fetch cards
+    cards = db.query(Flashcard).filter(
+        Flashcard.set_id == set_id
+    ).all()
+
+    return cards

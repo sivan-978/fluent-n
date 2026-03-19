@@ -40,7 +40,7 @@ function home() {
                         >
                             Logout
                         </button>
-                        <Link href='/sets/create' className=' mt-7 mr-4 inline-block py-[6px] px-6 bg-blue-600 font-semibold rounded-full text-2xl hover:bg-blue-700'>Create</Link>
+                        <Link href='/flashcard-sets/create' className=' mt-7 mr-4 inline-block py-[6px] px-6 bg-blue-600 font-semibold rounded-full text-2xl hover:bg-blue-700'>Create</Link>
                         <Link href='/create' className='inline-block py-[6px] px-6 bg-blue-400 font-semibold rounded-full text-2xl hover:bg-blue-500'>Learn</Link>
                     </div>
                 </main>

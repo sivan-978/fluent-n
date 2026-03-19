@@ -51,3 +51,11 @@ export async function getMySets() {
     method: "GET",
   })
 }
+
+
+
+export async function getCards(setId: number) {
+  return apiRequest(`/sets/${setId}/cards`, {
+    method: "GET",
+  })
+}

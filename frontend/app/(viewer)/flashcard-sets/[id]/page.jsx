@@ -1,34 +1,77 @@
 "use client";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-
+import { getCards, getMySets } from "@/lib/api"
 
 export default function FlashcardSetPage() {
     const { id } = useParams();
     const router = useRouter();
     const [setData, setSetData] = useState(null);
-
+    const [loading, setLoading] = useState(true)
     // new state for viewer
     const [idx, setIdx] = useState(0);
     const [flipped, setFlipped] = useState(false);
 
 
     useEffect(() => {
-        const allSets = JSON.parse(localStorage.getItem("flashSets") || "[]");
-        const found = allSets.find((s) => s.id === id);
-        setSetData(found || null);
-        setIdx(0);
-        setFlipped(false);
-    }, [id]);
+        async function load() {
+            try {
+                setLoading(true)
+
+                const sets = await getMySets()
+                const found = sets.find((s) => s.id === Number(id))
+
+                if (!found) {
+                    setSetData(null)
+                    setLoading(false)
+                    return
+                }
+
+                const cards = await getCards(Number(id))
+
+                setSetData({
+                    id: found.id,
+                    title: found.title,
+                    description: found.description,
+                    cards: cards.map((c) => ({
+                        id: c.id,
+                        term: c.front_text,
+                        defination: c.back_text,
+                    })),
+                })
+
+            } catch (err) {
+                console.error(err)
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        if (id) load()
+    }, [id])
+
+
+
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-slate-800">
+                <p className="text-gray-300 text-xl">Loading set...</p>
+            </div>
+        )
+    }
+
 
     if (!setData) {
         return (
-            <div className="p-6 text-gray-200">
-                Set not found.
-                <button onClick={() => router.push("/library/flashcard-sets")}
-                    className="ml-4 px-3 py-1 rounded bg-slate-700">
-                    Back to library
-                </button>
+            <div className="p-6 bg-amber-700  min-h-screen flex justify-center items-center overflow-hidden text-gray-200">
+                <div className="flex flex-col gap-5 items-center bg-slate-800 p-18 max-h-52 rounded-xl">
+                    <p className="text-2xl font-semibold">Set not found.</p>
+
+                    <button onClick={() => router.push("/library/flashcard-sets")}
+                        className="ml-4 px-3 py-1 rounded bg-slate-700 cursor-pointer hover:bg-slate-600">
+                        Back to library
+                    </button>
+                </div>
             </div>
         );
     }
