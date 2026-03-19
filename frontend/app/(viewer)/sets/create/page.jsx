@@ -11,9 +11,9 @@ import { DndContext, closestCenter, PointerSensor, useSensor, useSensors, } from
 import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove, } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { restrictToVerticalAxis, restrictToParentElement, restrictToWindowEdges, } from "@dnd-kit/modifiers";
+import { createSet, createCard } from "@/lib/api"
 
-
-export default function createSet() {
+export default function createSetPage() {
     const router = useRouter();
 
     // gate SSR: render nothing until the component mounts on the client
@@ -39,33 +39,34 @@ export default function createSet() {
         return first.term.trim() && first.defination.trim();
     };
 
-    const handleCreate = () => {
-        setSubmitted(true);
-        console.log(submitted)
-        if (!isValid()) {
-            return;
+    const handleCreate = async () => {
+        setSubmitted(true)
+
+        if (!isValid()) return
+
+        try {
+            // create set in backend
+            const newSet = await createSet(title, description)
+
+            // create cards
+            for (const card of cards) {
+            if (!card.term.trim()) continue
+
+            await createCard(
+                newSet.id,
+                card.term,
+                card.defination
+            )
+            }
+
+            // go to library page
+            router.push("/library/flashcard-sets")
+
+        } catch (err) {
+            console.error(err)
+            alert("Failed to create set")
         }
-
-        // shape we’ll store (adapt as you like)
-        const setToSave = {
-            id,
-            title,
-            description,
-            level: "A1",
-            language: "Spanish",
-            cards,
-            // for the preview box:
-            lastViewISO: null,      // null = never
-            completedPct: 0,        // 0..100
-            createdAt: new Date().toISOString(),
-        };
-
-        const prev = JSON.parse(localStorage.getItem("flashSets") || "[]");
-        localStorage.setItem("flashSets", JSON.stringify([setToSave, ...prev]));
-
-
-        router.push("/library/flashcard-sets");
-    };
+    }
 
 
     //remove card by id

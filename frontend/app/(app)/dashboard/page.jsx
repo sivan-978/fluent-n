@@ -1,10 +1,18 @@
-
+"use client";
 import Link from "next/link";
 import LoggedinHeader from "@/components/loggedinHeader.jsx"
 import SideNav from "@/components/sideNav.jsx"
-
+import { removeToken } from "@/lib/token"
+import { useRouter } from "next/navigation"
 
 function home() {
+    const router = useRouter()
+
+    function handleLogout() {
+        removeToken()
+        router.push("/login")
+    }
+
     return (
         <div className='flex flex-col h-screen'>
             <header className='flex-shrink-0'>
@@ -26,6 +34,12 @@ function home() {
                                 <img src="/icons/streak.png" alt="streak" className='h-12' />
                             </div>
                         </div>
+                        <button
+                            onClick={handleLogout}
+                            className="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded-full cursor-pointer mr-5"
+                        >
+                            Logout
+                        </button>
                         <Link href='/sets/create' className=' mt-7 mr-4 inline-block py-[6px] px-6 bg-blue-600 font-semibold rounded-full text-2xl hover:bg-blue-700'>Create</Link>
                         <Link href='/create' className='inline-block py-[6px] px-6 bg-blue-400 font-semibold rounded-full text-2xl hover:bg-blue-500'>Learn</Link>
                     </div>

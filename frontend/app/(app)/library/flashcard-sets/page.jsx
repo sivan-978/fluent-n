@@ -1,39 +1,42 @@
 "use client";
 import { useEffect, useState } from "react";
 import FlashcardBoxPreview from "@/components/flashcardBoxPreview";
-
+import { getMySets } from "@/lib/api"
 
 export default function SetsPage() {
     const [items, setItems] = useState([]);
 
     useEffect(() => {
-        const all = JSON.parse(localStorage.getItem("flashSets") || "[]");
-        // map to the shape your preview expects
-        const mapped = all.map(s => ({
-            id: s.id,
-            title: s.title,
-            level: s.level ?? "A1",
-            language: s.language ?? "Spanish",
-            lastView: s.lastViewISO ? timeAgo(s.lastViewISO) : "never",
-            cardsCount: s.cards?.length ?? 0,
-            completed: `${Math.round(s.completedPct ?? 0)}%`,
-            // any extra fields your box uses:
-            bg: "/icons/boxBg.jpg",
-        }));
-        setItems(mapped);
-    }, []);
+        async function loadSets() {
+            try {
+                const sets = await getMySets()
 
-    const deleteAll = () => {
-        localStorage.removeItem("flashSets"); // clear localStorage
-        setItems([]); // reset state so UI updates
-    };
+                const mapped = sets.map((s) => ({
+                    id: s.id,
+                    title: s.title,
+                    level: "A1",
+                    language: "Spanish",
+                    lastView: s.created_at ? timeAgo(s.created_at) : "never",
+                    cardsCount: s.flashcards?.length ?? 0,
+                    completed: "0%",
+                    bg: "/icons/boxBg.jpg",
+                }))
+
+                setItems(mapped)
+            } catch (err) {
+                console.error(err)
+            }
+        }
+
+        loadSets()
+    }, [])
 
 
     return (
         <main className="flex flex-1 flex-col px-9 gap-8 mt-10">
             <div className="flex items-center justify-between ">
                 <span className="font-medium text-xl text-gray-400">{items.length} flascard sets</span>
-                <button onClick={deleteAll} className="bg-red-800 hover:bg-red-900 text-white font-semibold px-4 py-2 rounded-lg">
+                <button className="bg-red-800 hover:bg-red-900 text-white font-semibold px-4 py-2 rounded-lg">
                     delete all
                 </button>
             </div>

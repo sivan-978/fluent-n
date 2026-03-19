@@ -26,3 +26,28 @@ export async function apiRequest(endpoint: string, options: RequestInit = {}) {
 
   return response.json();
 }
+
+
+
+export async function createSet(title: string, description: string) {
+  return apiRequest("/sets", {
+    method: "POST",
+    body: JSON.stringify({ title, description }),
+  })
+}
+
+
+
+export async function createCard(setId: number, front_text: string, back_text: string) {
+  return apiRequest(`/sets/${setId}/cards`, {
+    method: "POST",
+    body: JSON.stringify({ front_text, back_text }),
+  })
+}
+
+
+export async function getMySets() {
+  return apiRequest("/sets", {
+    method: "GET",
+  })
+}
