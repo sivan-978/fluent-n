@@ -110,3 +110,12 @@ ________________________________________________________________________________
 5. Describe a table (show table structure): \d users
 6. Shows all rows stored in the table: SELECT * FROM users;
 7. Exit PostgreSQL: \q
+
+
+nieuwe komomn
+ALTER TABLE flashcard_sets
+ADD COLUMN level VARCHAR;
+
+kolomn verwijderen
+ALTER TABLE flashcard_sets
+DROP COLUMN level;

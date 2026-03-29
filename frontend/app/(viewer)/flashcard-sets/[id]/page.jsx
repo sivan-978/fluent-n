@@ -2,6 +2,8 @@
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getCards, getMySets } from "@/lib/api"
+import { BookOpen, Sparkles, Globe, Lightbulb, Star, Brain, ArrowLeft } from 'lucide-react';
+import Link from "next/link";
 
 export default function FlashcardSetPage() {
     const { id } = useParams();
@@ -98,14 +100,27 @@ export default function FlashcardSetPage() {
 
 
     return (
-        <main className="bg-slate-800  min-h-screen flex justify-center overflow-hidden">
+        <main className="bg-gradient-to-br from-[#fff5e6] via-[#ffe8cc] to-[#ffd9a8] relative min-h-screen flex justify-center overflow-hidden">
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <BookOpen className="absolute top-12 left-8 w-20 h-20 text-[#fc6b03]/15 opacity-60" />
+                <Sparkles className="absolute top-24 right-12 w-16 h-16 text-[#fc6b03]/20 opacity-70" />
+                <Globe className="absolute top-1/4 left-16 w-24 h-24 text-[#965c09]/15 opacity-50" />
+                <Brain className="absolute bottom-47 left-20 w-16 h-16 text-[#965c09]/15 opacity-80" />
+                <Lightbulb className="absolute bottom-55 right-16 w-21 h-21 text-[#fc6b03]/20 opacity-70" />
+                <Star className="absolute bottom-94 right-13 w-14 h-14 text-[#fc6b03]/15" />
+            </div>
+
             <div className="w-4/5 flex flex-col items-center py-8  gap-20 min-w-0">
 
                 <header className="flex flex-col items-center gap-2 w-full min-w-0">
-                    <h1 className="text-4xl font-bold">{setData.title}</h1>
-                    <h3 className="text-xl font-medium px-20  w-full max-w-full text-center break-words">{setData.description}</h3>
+                    <h1 className="text-2xl font-bold text-[#965c09]">{setData.title}</h1>
+                    <h3 className="text-xl text-[#965c09] font-medium px-20  w-full max-w-full text-center break-words">{setData.description}</h3>
                 </header>
 
+                <Link href="/library/flashcard-sets" className="absolute top-12 left-60 flex gap-1.5 text-[#965c09] py-2 px-4 text-xl rounded-2xl border-2 border-[#fc6b03]/30 bg-[#fff5e6] hover:bg-[#fef0dd] font-medium justify-center items-center  ">
+                    <ArrowLeft className=" w-5 h-5" />
+                    Exit
+                </Link>
 
                 {/* the card (one at a time) */}
                 <FlipCard
@@ -121,23 +136,23 @@ export default function FlashcardSetPage() {
                     <button
                         onClick={prev}
                         disabled={idx === 0}
-                        className={`px-4 py-2 rounded-lg ${idx === 0 ? "bg-slate-700/50" : "bg-slate-700 cursor-pointer"
+                        className={`px-8 py-2 rounded-lg ${idx === 0 ? "bg-[#c88b36]" : "bg-[#9c5f0b] cursor-pointer"
                             }`}
                     >
                         Prev
                     </button>
 
                     {/* progress */}
-                    <div className="text-sm text-gray-300">
+                    <div className="text-[#965c09]/60 text-sm font-semibold">
                         Card {idx + 1} / {total}
                     </div>
 
                     <button
                         onClick={next}
                         disabled={idx === total - 1}
-                        className={`px-4 py-2 rounded-lg ${idx === total - 1
-                            ? "bg-slate-700/50"
-                            : "bg-slate-700 cursor-pointer"
+                        className={`px-8 py-2 rounded-lg ${idx === total - 1
+                            ? "bg-[#c88b36]"
+                            : "bg-[#9c5f0b] cursor-pointer"
                             }`}
                     >
                         Next
@@ -152,20 +167,25 @@ export default function FlashcardSetPage() {
 
 function FlipCard({ term, definition, flipped, onToggle }) {
     return (
-        <div className=" w-full h-full max-h-3/5 max-w-2xl [perspective:1000px]">
+        <div className="relative w-full h-full max-h-3/5 max-w-2xl [perspective:1000px]">
+            <div className="absolute inset-0 overflow-hidden pointer-events-none z-10">
+                <Star className="absolute top-4 right-4 w-6 h-6 text-[#fc6b03]/50" />
+                <Sparkles className="absolute bottom-4 left-4 w-6 h-6 text-[#fc6b03]/50" />
+            </div>
+
             <button
                 onClick={onToggle}
-                className={`cursor-pointer relative w-full h-full rounded-xl bg-slate-800 shadow-[0px_0px_14px_rgba(0,0,0,1)] shadow-gray-500
-                    transition-transform duration-300 [transform-style:preserve-3d]
-                    ${flipped ? "[transform:rotateY(180deg)]" : ""}
+                className={`w-full h-full bg-gradient-to-br from-white to-[#fff5e6] rounded-3xl shadow-2xl border-2 border-[#fc6b03]/40 p-12 cursor-pointer transition-all hover:shadow-3xl relative
+                    duration-300 [transform-style:preserve-3d]
+                    ${flipped ? "[transform:rotateY(180deg)] ring-4 ring-[#fc6b03]/30" : ""}
                 `}
             >
                 <div
                     className="absolute inset-0 grid place-items-center p-6 text-2xl font-semibold w-full h-full min-w-0 text-center overflow-hidden
                      [backface-visibility:hidden]"
                 >
-                    <span className="block w-full max-w-full whitespace-normal [overflow-wrap:anywhere] ">
-                        {term || <span className="text-gray-500">No term</span>}
+                    <span className="text-5xl font-bold text-[#965c09] block w-full max-w-full whitespace-normal [overflow-wrap:anywhere] ">
+                        {term || <span className="text-5xl font-bold text-[#965c09]">No term</span>}
                     </span>
                 </div>
 
@@ -173,13 +193,13 @@ function FlipCard({ term, definition, flipped, onToggle }) {
                     className="absolute inset-0 grid place-items-center p-6 text-2xl font-semibold
                      [transform:rotateY(180deg)] [backface-visibility:hidden]"
                 >
-                    <span className="block w-full max-w-full whitespace-normal [overflow-wrap:anywhere] ">
-                        {definition || <span className="text-gray-500">No definition</span>}
+                    <span className="text-5xl font-bold text-[#965c09] block w-full max-w-full whitespace-normal [overflow-wrap:anywhere] ">
+                        {definition || <span className="text-[#965c09]">No definition</span>}
                     </span>
                 </div>
             </button>
 
-            <p className="mt-3 text-center text-sm text-gray-400">
+            <p className="mt-3 text-center text-[#965c09]/50 text-sm font-semibold">
                 Click the card to flip
             </p>
         </div>
