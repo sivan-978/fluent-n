@@ -5,7 +5,8 @@ import SideNav from "@/components/sideNav.jsx"
 import { removeToken } from "@/lib/token"
 import { useRouter } from "next/navigation"
 
-function home() {
+
+export default function Dashboard(userName = "Alex") {
     const router = useRouter()
 
     function handleLogout() {
@@ -48,5 +49,3 @@ function home() {
         </div>
     )
 }
-
-export default home

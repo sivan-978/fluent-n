@@ -1,36 +1,53 @@
 "use client";
 import Link from "next/link";
 import { useSidebar } from "@/app/_providers/sidebarProvider.jsx";
+import { Flame, Bell} from 'lucide-react';
+
 
 
 export default function loggedinHeader() {
     const { toggle } = useSidebar();
 
     return (
-        <header className="bg-slate-600 flex items-center py-5">
+        <header className="bg-white/70 backdrop-blur-md max-w-7xl min-w-full flex items-center justify-between pr-6 h-20 border-b border-[#fc6b03]/10">
 
-            <div className='flex items-center pl-7 gap-3 w-56'>
+                
+            <div className="flex items-center gap-4 pl-10">
                 <img src="/icons/menu.png" alt="menu" className='h-8 cursor-pointer' onClick={toggle} />
-                <Link href="/dashboard" className="flex items-center">
-                    <img src="/icons/logo.jpg" alt="logo" className='h-14 w-15 rounded-full px-1' />
-                </Link>
+
+                <div className="w-10 h-10 bg-[#fc6b03] rounded-xl flex items-center justify-center shadow-lg transform -rotate-6">
+                    <span className="text-white font-black text-xl">
+                        <Link href="/dashboard" className="flex items-center">
+                            <img src="/icons/logo.jpg" alt="logo" className='h-10 w-11 rounded-full' />
+                        </Link>
+                    </span>
+                </div>
+                <span className="text-2xl font-black text-[#965c09] tracking-tight">Fluent</span>
             </div>
 
-            <div className='flex flex-1 justify-center'>
-                <div className='relative w-3/5'>
-                    <label htmlFor="header-search" className="sr-only">
-                        Search Fluentsets
-                    </label>
-                    <input placeholder='Search.....' type="text" className='rounded-3xl w-full pr-4 pl-10 py-2 bg-gray-50 text-gray-900' />
-                    <img src="/icons/search.png" alt="search" className='absolute left-3 top-1/2 transform -translate-y-1/2 h-6' />
-                </div>
-            </div>
 
-            <div className='flex gap-5 w-56 justify-center'>
-                <img src="/icons/create.png" alt="add" className='h-10' />
-                <div className='bg-white rounded-full h-11 w-11'>
+            <div className="flex items-center gap-6 pr-16">
 
+                <div className="hidden md:flex items-center gap-4 px-4 py-2 bg-[#fff5e6] rounded-full border border-[#fc6b03]/10">
+                    <div className="flex items-center gap-2">
+                        <Flame className="w-5 h-5 text-[#fc6b03] fill-[#fc6b03]" />
+                        <span className="font-black text-[#965c09]">7 Days</span>
+                    </div>
                 </div>
+
+                <div className="flex items-center gap-3">
+                    <button className="p-2.5 text-[#965c09]/60 hover:text-[#fc6b03] transition-colors relative cursor-pointer">
+                        <Bell className="w-6 h-6" />
+                        <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-[#fc6b03] border-2 border-white rounded-full"></span>
+                    </button>
+
+                    <div className="w-10 h-10 rounded-full border-2 border-[#fc6b03]/20 p-0.5 overflow-hidden">
+                        <div className="w-full h-full rounded-full bg-[#965c09] flex items-center justify-center text-white font-bold">
+                            0
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
         </header>
