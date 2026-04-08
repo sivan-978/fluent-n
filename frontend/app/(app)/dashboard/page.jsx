@@ -202,7 +202,7 @@ export default function Dashboard(userName = "Alex") {
 
                                 <div className="space-y-6">
                                     {[
-                                        { name: "Sarah K.", xp: "2,450", avatar: "S" },
+                                        { name: "mimo", xp: "2,450", avatar: "S" },
                                         { name: "You", xp: "1,890", avatar: "A", active: true },
                                         { name: "Tom M.", xp: "1,620", avatar: "T" },
                                         ].map((user, i) => (
