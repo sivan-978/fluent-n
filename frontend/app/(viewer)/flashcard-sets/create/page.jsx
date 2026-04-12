@@ -6,12 +6,13 @@ import { useRouter } from "next/navigation";
 import { SidebarProvider } from "@/app/_providers/sidebarProvider";
 import LoggedinHeader from "@/components/loggedinHeader.jsx"
 import SideNav from "@/components/sideNav";
+import LanguagePicker from "@/components/LanguagePicker";
 
 import { DndContext, closestCenter, PointerSensor, useSensor, useSensors, } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove, } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { restrictToVerticalAxis, restrictToParentElement, restrictToWindowEdges, } from "@dnd-kit/modifiers";
-import { createSet, createCard } from "@/lib/api"
+import { createSet, createCard, getLanguages  } from "@/lib/api"
 
 import { ArrowLeft, Plus, Trash2, BookOpen, Globe, Sparkles, Star, X } from 'lucide-react';
 
@@ -29,8 +30,25 @@ export default function createSetPage() {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
 
+    const [languages, setLanguages] = useState([]);
     const [sourceLanguage, setSourceLanguage] = useState("");
     const [targetLanguage, setTargetLanguage] = useState("");
+
+    useEffect(() => {
+        const loadLanguages = async () => {
+            try {
+                const data = await getLanguages();
+                setLanguages(data);
+            } catch (error) {
+                console.error("Failed to load languages:", error);
+            }
+        };
+
+        loadLanguages();
+    }, []);
+
+    const sourceLanguageLabel = languages.find((lang) => lang.code === sourceLanguage)?.label || "Source";
+    const targetLanguageLabel = languages.find((lang) => lang.code === targetLanguage)?.label || "Target";
 
     const [cancelModal, setCancelModal] = useState(false);
 
@@ -162,18 +180,18 @@ export default function createSetPage() {
                     </div>
                 </div>
 
-                <header className='flex-shrink-0'>
+                <header className='fixed w-full z-[100] flex-shrink-0'>
                     <LoggedinHeader />
                 </header>
 
-                <div className='flex flex-1 overflow-hidden'>
+                <div className='flex flex-1 overflow-visible'>
                     
                     <aside className='flex-shrink-0 bg-slate-700 min-h-full'>
                         <SideNav />
                     </aside>
 
 
-                    <main className="grid flex-1 pt-8 px-60 gap-16 pb-10 bg-gradient-to-br from-[#fff3e3] to-[#ffe0b8] overflow-auto ">
+                    <main className="grid flex-1 mt-20 pt-8 px-60 gap-16 pb-10 bg-gradient-to-br from-[#fff3e3] to-[#ffe0b8] overflow-visible ">
 
                         <div className="flex justify-center">
                             {/* welcoming */}
@@ -193,7 +211,7 @@ export default function createSetPage() {
                         <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-10">
 
                             {/* top section */}
-                            <div className="flex flex-col gap-3 p-10 relative bg-white/90 backdrop-blur-sm rounded-[2rem] shadow-2xl border-2 border-[#fc6b03]/10 ">
+                            <div className="flex flex-col gap-3 p-10 relative z-50 bg-white/90 backdrop-blur-sm rounded-[2rem] shadow-2xl border-2 border-[#fc6b03]/10 ">
                                 
                                 <div className="absolute top-4 right-4 text-[#fc6b03]/30">
                                     <Star className="w-6 h-6" />
@@ -230,53 +248,22 @@ export default function createSetPage() {
                                 </div>
 
                                 {/* Language selectors */}
-                                <div className="grid grid-cols-2 gap-6">
+                                <div className="flex gap-6">
+                                    <LanguagePicker
 
-                                    <div>
-                                        <label className="flex items-center gap-2 text-[#fc6b03] font-bold mb-2 text-sm">
-                                            <Globe className="w-4 h-4" />
-                                            Source Language
-                                        </label>
+                                        label="Source Language"
+                                        value={sourceLanguage}
+                                        onChange={setSourceLanguage}
+                                        languages={languages}
+                                    />
 
-                                        <select
-                                            value={sourceLanguage}
-                                            onChange={(e) => setSourceLanguage(e.target.value)}
-                                            className="w-full px-6 py-4 bg-white border-2 border-[#fc6b03]/20 rounded-2xl outline-none focus:border-[#fc6b03] transition-colors text-[#965c09] font-medium cursor-pointer"
-                                        >
-                                            <option>English</option>
-                                            <option>Spanish</option>
-                                            <option>French</option>
-                                            <option>German</option>
-                                            <option>Italian</option>
-                                            <option>Portuguese</option>
-                                            <option>Chinese</option>
-                                            <option>Japanese</option>
-                                            <option>Korean</option>
-                                        </select>
-                                    </div>
-
-                                    <div>
-                                        <label className="flex items-center gap-2 text-[#fc6b03] font-bold mb-2 text-sm">
-                                            <Globe className="w-4 h-4" />
-                                            Target Language
-                                        </label>
-
-                                        <select
-                                            value={targetLanguage}
-                                            onChange={(e) => setTargetLanguage(e.target.value)}
-                                            className="w-full px-6 py-4 bg-white border-2 border-[#fc6b03]/20 rounded-2xl outline-none focus:border-[#fc6b03] transition-colors text-[#965c09] font-medium cursor-pointer"
-                                        >
-                                            <option>Spanish</option>
-                                            <option>English</option>
-                                            <option>French</option>
-                                            <option>German</option>
-                                            <option>Italian</option>
-                                            <option>Portuguese</option>
-                                            <option>Chinese</option>
-                                            <option>Japanese</option>
-                                            <option>Korean</option>
-                                        </select>
-                                    </div>
+                                    <LanguagePicker
+                                        label="Target Language"
+                                        value={targetLanguage}
+                                        onChange={setTargetLanguage}
+                                        languages={languages}
+                                        excludeCode={sourceLanguage}
+                                    />
                                 </div>
 
                             </div>
@@ -297,27 +284,27 @@ export default function createSetPage() {
                                                         
                                                         {/* Input fields */}
                                                         <div className="flex flex-1 flex-col gap-1">
-                                                            <label className="text-[#965c09] text-sm font-medium" htmlFor="">Spanish</label>
+                                                            <label className="text-[#965c09] text-sm font-medium"> {sourceLanguageLabel} </label>
 
                                                             <input
                                                                 type="text"
                                                                 placeholder="Term"
                                                                 value={card.term}
                                                                 onChange={(e) => updateCard(card.id, "term", e.target.value)}
-                                                                className={`flex-1 bg-white rounded-lg py-2 px-3 border-2 border-[#fc6b03]/20 outline-none focus:border-[#fc6b03] placeholder:text-[#b47a29]/70 placeholder:text-sm placeholder:font-medium ${submitted &&  idx === 0 && !card.term.trim() ? "border-red-500 border-2 placeholder-gray-900 placeholder:font-medium" : ""}`}
+                                                                className={`flex-1 text-[#965c09] bg-white rounded-lg py-2 px-3 border-2 border-[#fc6b03]/20 outline-none focus:border-[#fc6b03] placeholder:text-[#b47a29]/70 placeholder:text-sm placeholder:font-medium ${submitted &&  idx === 0 && !card.term.trim() ? "border-red-500 border-2 placeholder-gray-900 placeholder:font-medium" : ""}`}
                                                             />
                                                         </div>
 
 
                                                         <div className="flex flex-1 flex-col gap-1">
-                                                            <label className="text-[#965c09] text-sm font-medium" htmlFor="">English</label>
+                                                            <label className="text-[#965c09] text-sm font-medium"> {targetLanguageLabel} </label>
 
                                                             <input
                                                                 type="text"
                                                                 placeholder="Defination"
                                                                 value={card.defination}
                                                                 onChange={(e) => updateCard(card.id, "defination", e.target.value)}
-                                                                className={`flex-1 bg-white rounded-lg py-2 px-3 border-2 border-[#fc6b03]/20 outline-none focus:border-[#fc6b03] placeholder:text-[#b47a29]/70 placeholder:text-sm placeholder:font-medium ${submitted &&  idx === 0 && !card.defination.trim() ? "border-red-500 border-2 placeholder-gray-900 placeholder:font-medium" : ""}`}
+                                                                className={`flex-1 bg-white text-[#965c09] rounded-lg py-2 px-3 border-2 border-[#fc6b03]/20 outline-none focus:border-[#fc6b03] placeholder:text-[#b47a29]/70 placeholder:text-sm placeholder:font-medium ${submitted &&  idx === 0 && !card.defination.trim() ? "border-red-500 border-2 placeholder-gray-900 placeholder:font-medium" : ""}`}
                                                             />
                                                         </div>
 

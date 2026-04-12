@@ -9,7 +9,7 @@ export default function loggedinHeader() {
     const { toggle } = useSidebar();
 
     return (
-        <header className="bg-white/70 backdrop-blur-md max-w-7xl min-w-full flex items-center justify-between pr-6 h-20 border-b border-[#fc6b03]/10">
+        <header className="bg-[#f8f3ef] max-w-7xl min-w-full flex items-center justify-between pr-6 h-20 border-b border-[#fc6b03]/10">
 
                 
             <div className="flex items-center gap-4 pl-10">

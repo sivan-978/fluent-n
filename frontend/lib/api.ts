@@ -59,3 +59,7 @@ export async function getCards(setId: number) {
     method: "GET",
   })
 }
+
+export async function getLanguages() {
+  return apiRequest("/languages");
+}
