@@ -1,44 +1,71 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "@/app/_providers/sidebarProvider";
 
-function sideNav() {
+const navItems = [
+    {
+        href: "/dashboard",
+        label: "Home",
+        icon: "/icons/home.png",
+        match: (pathname) => pathname === "/dashboard",
+    },
+    {
+        href: "/library/flashcard-sets",
+        label: "Library",
+        icon: "/icons/folder.png",
+        match: (pathname) => pathname.startsWith("/library"),
+    },
+    {
+        href: "/notifications",
+        label: "Notifications",
+        icon: "/icons/notification.png",
+        match: (pathname) => pathname === "/notifications",
+    },
+];
+
+
+export default function SideNav() {
     const pathname = usePathname();
-    const inLibrary = pathname.startsWith("/library");
     const { open } = useSidebar();
 
     return (
-        <aside className={`transition-all duration-200 ${open ? "w-64" : "w-0"} overflow-hidden`}>
-             <nav className='grid w-64 px-5 py-6 '>
+        <aside className={`text-[#965c09] transition-all duration-200 ease-in-out ${open ? "w-64" : "w-0"} overflow-hidden bg-[#fbe9d0] flex-shrink-0 min-h-screen`}>
+             <nav className='w-64 px-5 py-6 '>
 
-                <div className='border-b-2 pb-6 gap-2 grid'>
-                    <Link href="/dashboard" className={`hover:bg-slate-600 flex items-center gap-4 pl-4 py-1 rounded-lg 
-                        ${pathname === "/dashboard" ? "bg-slate-600" : ""}`}
-                    >
-                        <img src="/icons/home.png" alt="Home" className='h-8 w-8' />
-                        <p className='font-semibold'>Home</p>
-                    </Link>
+                <div className='grid gap-2 border-b-2 pb-6'>
+                    {navItems.map((item) => {
+                        const active = item.match(pathname);
 
-                    <Link href="/library/flashcard-sets" className={`hover:bg-slate-600 flex items-center gap-4 pl-4 py-1 rounded-lg 
-                        ${inLibrary ? "bg-slate-600" : ""}`}
-                    >
-                        <img src="/icons/folder.png" alt="Folder" className='h-8 w-8' />
-                        <p className='font-semibold'>Library</p>
-                    </Link>
-
-                    <Link href="/notifications" className={`hover:bg-slate-600 flex items-center gap-4 pl-4 py-1 rounded-lg 
-                        ${pathname === "/notifications" ? "bg-slate-600" : ""}`}
-                    >
-                        <img src="/icons/notification.png" alt="notification" className='h-8 w-8' />
-                        <p className='font-semibold'>Notifications</p>
-                    </Link>
+                        return (
+                            <Link
+                                key={item.href}
+                                href={item.href}
+                                className={`
+                                    flex items-center gap-4 rounded-lg py-2 pl-4 font-semibold
+                                    transition-colors duration-200
+                                    ${
+                                        active
+                                        ? "bg-[#f1d4b5]"
+                                        : "hover:bg-[#f6dcc0]"
+                                    }
+                                `}
+                            >
+                                <Image
+                                    src={item.icon}
+                                    alt={item.label}
+                                    width={32}
+                                    height={32}
+                                />
+                                <span>{item.label}</span>
+                            </Link>
+                        );
+                    })}
                 </div>
 
             </nav>
         </aside>
     )
 }
-
-export default sideNav
