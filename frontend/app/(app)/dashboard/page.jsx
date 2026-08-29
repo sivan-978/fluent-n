@@ -4,9 +4,9 @@ import LoggedinHeader from "@/components/loggedinHeader.jsx"
 import SideNav from "@/components/sideNav.jsx"
 import ImageWithFallback from "@/components/ImageWithFallback.tsx"
 import { SidebarProvider } from "@/app/_providers/sidebarProvider";
+import {currentUser} from "@/lib/api.ts"
+import { useState, useEffect } from "react";
 
-import { removeToken } from "@/lib/token"
-import { useRouter } from "next/navigation"
 
 import Link from "next/link";
 import { Plus, Play, MessageSquare, BookOpen, Trophy, Flame, Target, Sparkles, ArrowRight, Clock, Globe, Settings, Bell } from 'lucide-react';
@@ -15,18 +15,19 @@ import { Plus, Play, MessageSquare, BookOpen, Trophy, Flame, Target, Sparkles, A
 
 
 export default function Dashboard(userName = "Alex") {
-    const router = useRouter()
-
-    function handleLogout() {
-        removeToken()
-        router.push("/login")
-    }
-
 
     const recentSets = [
         { id: '1', title: 'Spanish Basics', progress: 65, color: 'from-[#fc6b03] to-[#ff9d5c]' },
         { id: '2', title: 'Travel Phrases', progress: 30, color: 'from-[#965c09] to-[#c48e42]' },
     ];
+
+
+    const [user, setUser] = useState(null);
+    useEffect(() => {
+        currentUser()
+            .then(setUser)
+            .catch(console.error);
+    }, []);
 
 
     return (
@@ -50,7 +51,7 @@ export default function Dashboard(userName = "Alex") {
 
                                 <div className="text-left">
                                     <h1 className="text-5xl font-black mb-4 leading-tight">
-                                        Hola, Alex! 👋
+                                        Hola, {user?.username}! 👋
                                     </h1>
                                     <p className="text-white/80 text-lg font-medium mb-8 max-w-md">
                                         You're doing great! You studied 45 new words yesterday. Ready to keep the momentum going?
@@ -239,18 +240,6 @@ export default function Dashboard(userName = "Alex") {
                                 </div>
 
                             </div>
-                        </div>
-
-
-
-                        {/* buttons */}
-                        <div className="">
-                            <button
-                                onClick={handleLogout}
-                                className="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded-full cursor-pointer mr-5"
-                            >
-                                Logout
-                            </button>
                         </div>
 
                     </main>

@@ -63,3 +63,11 @@ export async function getCards(setId: number) {
 export async function getLanguages() {
   return apiRequest("/languages");
 }
+
+
+//to get current logged in user info (username and email)
+export async function currentUser(){
+  return apiRequest("/users/me", {
+    method: "GET"
+  });
+}
