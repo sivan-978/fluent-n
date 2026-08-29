@@ -3,7 +3,7 @@
 import Link from "next/link";
 
 
-function flashcardBoxPreview({ items = [] }) {
+export default function flashcardBoxPreview({ items = [] }) {
 
     return (
 
@@ -12,35 +12,45 @@ function flashcardBoxPreview({ items = [] }) {
 
                 <Link
                     href={`/flashcard-sets/${box.id}`}
-                    className='bg-slate-500 flex flex-col gap-6 max-w-[360px] min-w-[360px] w-[360px] max-h-72 h-72 min-h-72 rounded-xl overflow-hidden shadow-[inset_0px_0px_14px_rgba(0,0,0,1)] bg-cover bg-top hover:shadow-[inset_0px_0px_49px_rgba(0,0,0,1)] transition-shadow'
-                    style={{ backgroundImage: `url(${box.bg})` }}
-                >
-                    <div className="h-full flex gap-1 overflow-hidden justify-between">
-                        <p className="text-black font-bold text-2xl pt-3 px-3 overflow-hidden overflow-ellipsis break-words">
-                            {box.title}
-                        </p>
+                    className=' flex flex-col max-w-[360px] min-w-[360px] w-[360px] bg-[#FFF4E3] border border-[#8B4513] rounded-xl overflow-hidden shadow-[0_4px_12px_rgba(121,72,25,0.25)] hover:shadow-[0_6px_18px_rgba(121,72,25,0.35)] transition-shadow'
+                >   
 
-                        <div className="flex flex-col items-center pt-2 px-2 leading-tight">
-                            <span className="text-black font-semibold">{box.level}</span>
-                            <span className="text-black font-semibold">{box.language}</span>
-                        </div>
+                    <div>
+                        <img className="w-full object-cover h-60 object-top" src={box.bg} alt="background img" />
                     </div>
 
-                    <div className='grid grid-cols-1 gap-1'>
-                        <div className='text-orange-800 font-semibold flex flex-col text-right px-2 leading-tight'>
+
+                    <div className="flex flex-col gap-4 px-5 py-4">
+
+                        <div className="flex flex-col gap-2 overflow-hidden">
+                            <p className="text-[#7A3E0A] font-bold text-2xl overflow-hidden overflow-ellipsis break-words">
+                                {box.title}
+                            </p>
+
+                            <div className="flex gap-1.5 items-center leading-tight">
+                                <span className="text-sm border border-[#8B4513] text-[#8B4513] px-1.5 rounded-lg font-semibold">{box.level}</span>
+                                <span className="text-sm border border-[#8B4513] text-[#8B4513] px-1.5 rounded-lg font-semibold">{box.language}</span>
+                            </div>
+                        </div>
+
+
+                        <div className='flex flex-col text-sm text-[#965b09e8] font-semibold leading-tight'>
                             <span>{box.cardsCount} cards</span>
                             <span>Last reviewed {box.lastView} </span>
                         </div>
 
-                        <div className='bg-blue-500 text-center'>
-                            <p style={{ width: box.completed }} className='bg-blue-700 rounded-lg px-2 text-gray-200 '>{box.completed} completed</p>
+                        <div className='flex flex-col gap-1'>
+                            <div  className='flex-1 min-h-2 bg-[#D88900] rounded-full'></div>
+
+                            <p className='text-[#7e4d08] '>{box.completed} completed</p>
                         </div>
+
                     </div>
 
                 </Link>
+                
             </div>
         ))
 
     )
 }
-export default flashcardBoxPreview

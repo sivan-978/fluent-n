@@ -13,7 +13,7 @@ function Header() {
 
             <Link href="/" className='flex gap-1 items-center ml-8 py-2'>
                 <img className='h-14 rounded-full' src="/icons/graduation.png" alt="Fluent logo"/>
-                <span className='text-2xl font-black text-[#965c09]'>Fleunt</span>
+                <span className='text-2xl font-black text-[#965c09]'>Fluent</span>
             </Link>
 
             <nav className='flex gap-6 justify-center items-center'>

@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import FlashcardBoxPreview from "@/components/flashcardBoxPreview";
 import { getMySets } from "@/lib/api"
+import { Plus, Globe, ExternalLink, MoreVertical, BookOpen, Sparkles, Star, Layers, LayoutGrid, List } from 'lucide-react';
+import Link from 'next/link'
 
 export default function SetsPage() {
     const [items, setItems] = useState([]);
@@ -33,23 +35,64 @@ export default function SetsPage() {
 
 
     return (
-        <main className="flex flex-1 flex-col px-9 gap-8 mt-10">
-            <div className="flex items-center justify-between ">
-                <span className="font-medium text-xl text-gray-400">{items.length} flascard sets</span>
-                <button className="bg-red-800 hover:bg-red-900 text-white font-semibold px-4 py-2 rounded-lg">
-                    delete all
+        <main className="flex flex-1 flex-col gap-8">
+
+            <div className="flex items-center justify-between border-b-1 pb-5 border-amber-900">
+
+                <div className="grid gap-2">
+                    <h2 className="font-extrabold text-4xl text-[#673407]">My flashcard sets</h2>
+                    <span className="text-[#965C09] text-sm font-medium">Organize your sets and keep learning</span>
+                </div>
+
+                <button
+                    className="flex gap-0 items-center justify-center font-medium py-2.5 px-4 bg-gradient-to-br from-[#d55900] to-[#f56600] hover:bg-[#e85d00] text-white rounded-xl"
+                >
+                    <Plus className="h-4 " /> Create new set
                 </button>
+                
             </div>
 
-            {items.length > 0 ? (
-                items.map((box, i) => <FlashcardBoxPreview key={i} data={box} />)
-            ) : (
-                <p className="text-gray-400">No flashcards available.</p>
-            )}
 
-            <div className="grid grid-cols-3 gap-7">
-                <FlashcardBoxPreview items={items} />
+            <div className="grid gap-5">
+
+                <div className="flex items-center justify-between">
+                    <div>
+                        <span className="text-[#e85d00] text-[18px] font-medium">{items.length} set</span>
+                    </div>
+
+                    <div className="flex gap-0 border-1 border-amber-900 rounded-xl">
+                        <Link 
+                            className="text-black py-2 px-3"
+                            href="/3"
+                        > 
+                            <LayoutGrid className="h-5"/> 
+                        </Link>
+
+                        <Link 
+                            className="text-black py-2 px-3" 
+                            href="/3"
+                        > 
+                            <List className="h-5" /> 
+                        </Link>
+
+                    </div>
+                </div>
+
+
+                <div className="">
+                    {items.length > 0 ? (
+                        items.map((box, i) => <FlashcardBoxPreview key={i} data={box} />)
+                    ) : (
+                        <p className="text-amber-800 font-medium text-center">No flashcards available</p>
+                    )}
+
+                    <div className="grid grid-cols-3 gap-7">
+                        <FlashcardBoxPreview items={items} />
+                    </div>
+                </div>
+
             </div>
+
         </main>
     )
 }
