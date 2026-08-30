@@ -29,6 +29,7 @@ export default function createSetPage() {
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const [level, setLevel] = useState("");
 
     const [languages, setLanguages] = useState([]);
     const [sourceLanguage, setSourceLanguage] = useState("");
@@ -74,7 +75,7 @@ export default function createSetPage() {
 
         try {
             // create set in backend
-            const newSet = await createSet(title, description)
+            const newSet = await createSet(title, description, level)
 
             // create cards
             for (const card of cards) {
@@ -217,6 +218,7 @@ export default function createSetPage() {
                                     <Star className="w-6 h-6" />
                                 </div>
 
+
                                 {/* Title */}
                                 <div className="w-full">
                                     <label className="block text-[#965c09] font-bold mb-2 text-sm">
@@ -232,6 +234,7 @@ export default function createSetPage() {
                                     />
                                 </div>
 
+
                                 {/* Description */}
                                 <div className="w-full">
                                     <label className="block text-[#965c09] font-bold mb-2 text-sm">
@@ -246,6 +249,7 @@ export default function createSetPage() {
                                         className="w-full px-6 py-4 bg-white border-2 border-[#fc6b03]/20 rounded-2xl outline-none focus:border-[#fc6b03] transition-colors text-[#965c09] placeholder:text-[#965c09]/40 resize-none"
                                     />
                                 </div>
+
 
                                 {/* Language selectors */}
                                 <div className="flex gap-6">
@@ -264,6 +268,28 @@ export default function createSetPage() {
                                         languages={languages}
                                         excludeCode={sourceLanguage}
                                     />
+                                </div>
+
+
+                                {/* flashcard set level*/}
+                                <div>
+                                    <label className="block text-[#965c09] font-bold mb-2 text-sm">
+                                        Flashcard set level (optional)
+                                    </label>
+
+                                    <select
+                                        value={level}
+                                        onChange={(e) => setLevel(e.target.value)}
+                                        className="w-full px-6 py-4 bg-white border-2 border-[#fc6b03]/20 rounded-2xl outline-none focus:border-[#fc6b03] text-[#965c09] font-medium"
+                                    >
+                                        <option value="">Select level</option>
+                                        <option value="A1">A1 - Beginner</option>
+                                        <option value="A2">A2 - Elementary</option>
+                                        <option value="B1">B1 - Intermediate</option>
+                                        <option value="B2">B2 - Upper Intermediate</option>
+                                        <option value="C1">C1 - Advanced</option>
+                                        <option value="C2">C2 - Proficient</option>
+                                    </select>
                                 </div>
 
                             </div>

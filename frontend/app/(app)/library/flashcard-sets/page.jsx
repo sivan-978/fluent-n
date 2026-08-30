@@ -16,7 +16,7 @@ export default function SetsPage() {
                 const mapped = sets.map((s) => ({
                     id: s.id,
                     title: s.title,
-                    level: "A1",
+                    level: s.level,
                     language: "Spanish",
                     lastView: s.created_at ? timeAgo(s.created_at) : "never",
                     cardsCount: s.flashcards?.length ?? 0,

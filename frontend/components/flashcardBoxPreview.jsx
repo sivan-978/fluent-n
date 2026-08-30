@@ -53,7 +53,7 @@ export default function flashcardBoxPreview({ items = [], setItems }) {
 
                 <Link
                     href={`/flashcard-sets/${box.id}`}
-                    className=' flex flex-col max-w-[360px] min-w-[360px] w-[360px] bg-[#FFF4E3] border border-[#8B4513] rounded-xl overflow-hidden shadow-[0_4px_12px_rgba(121,72,25,0.25)] hover:shadow-[0_6px_18px_rgba(121,72,25,0.35)] transition-shadow'
+                    className=' flex flex-col max-w-[340px] w-[340px] bg-[#FFF4E3] border border-[#8B4513] rounded-xl overflow-hidden shadow-[0_4px_12px_rgba(121,72,25,0.25)] hover:shadow-[0_6px_18px_rgba(121,72,25,0.35)] transition-shadow'
                 >   
 
                     <div>
@@ -69,7 +69,11 @@ export default function flashcardBoxPreview({ items = [], setItems }) {
                             </p>
 
                             <div className="flex gap-1.5 items-center leading-tight">
-                                <span className="text-sm border border-[#8B4513] text-[#8B4513] px-1.5 rounded-lg font-semibold">{box.level}</span>
+                                {box.level && (
+                                    <span className="text-sm border border-[#8B4513] text-[#8B4513] px-1.5 rounded-lg font-semibold">
+                                        {box.level}
+                                    </span>
+                                )}
                                 <span className="text-sm border border-[#8B4513] text-[#8B4513] px-1.5 rounded-lg font-semibold">{box.language}</span>
                             </div>
                         </div>

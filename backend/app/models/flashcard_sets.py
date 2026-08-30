@@ -10,7 +10,8 @@ class FlashcardSet(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, nullable=False)
     description = Column(String)
-
+    level = Column(String, nullable=True)
+    
     owner_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
