@@ -44,11 +44,12 @@ export default function SetsPage() {
                     <span className="text-[#965C09] text-sm font-medium">Organize your sets and keep learning</span>
                 </div>
 
-                <button
+                <Link
+                    href="/flashcard-sets/create"
                     className="flex gap-0 items-center justify-center font-medium py-2.5 px-4 bg-gradient-to-br from-[#d55900] to-[#f56600] hover:bg-[#e85d00] text-white rounded-xl"
                 >
                     <Plus className="h-4 " /> Create new set
-                </button>
+                </Link>
                 
             </div>
 
@@ -86,8 +87,8 @@ export default function SetsPage() {
                         <p className="text-amber-800 font-medium text-center">No flashcards available</p>
                     )}
 
-                    <div className="grid grid-cols-3 gap-7">
-                        <FlashcardBoxPreview items={items} />
+                    <div className="flex flex-wrap gap-7">
+                        <FlashcardBoxPreview items={items} setItems={setItems} />
                     </div>
                 </div>
 

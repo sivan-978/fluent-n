@@ -1,14 +1,55 @@
 "use client";
 
 import Link from "next/link";
+import { EllipsisVertical, Trash2 } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import {deleteSet} from "@/lib/api.ts"
 
 
-export default function flashcardBoxPreview({ items = [] }) {
+export default function flashcardBoxPreview({ items = [], setItems }) {
+    const [openMenu, setOpenMenu] = useState(null);
+    const menuRef = useRef(null);
+    const [deletingId, setDeletingId] = useState(null);
+
+
+    //close 3 dots menu when is clicked anywhere on the screen
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setOpenMenu(null);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+
+    // delete set function
+    async function handleDeleteSet(id) {
+        try {
+            setDeletingId(id);
+
+            await deleteSet(id);
+
+            setItems((prev) => prev.filter((item) => item.id !== id));
+            setOpenMenu(null);
+
+        } catch (error) {
+            console.error("Failed to delete set:", error);
+        } finally {
+            setDeletingId(null);
+        }
+    }
+
 
     return (
 
         items.map((box) => (
-            <div key={box.id} className="col-span-1">
+            <div key={box.id} className="relative">
 
                 <Link
                     href={`/flashcard-sets/${box.id}`}
@@ -48,6 +89,35 @@ export default function flashcardBoxPreview({ items = [] }) {
                     </div>
 
                 </Link>
+
+
+                {/* 3 dots */}
+                <div  ref={menuRef}>
+
+                    <button
+                        type="button"
+                        onClick={() => setOpenMenu(openMenu === box.id ? null : box.id)}
+                        className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/90 text-[#965c09] hover:bg-[#fbe9d0]"
+                    >
+                        <EllipsisVertical className="w-5 h-5" />
+                    </button>
+
+                    {openMenu === box.id && (
+                        <div className="absolute right-2 top-13 px-6 py-4 bg-[#fff8f0] border border-[#965c09]/10 rounded-2xl shadow-xl z-[200]">
+
+                            <button
+                                type="button"
+                                disabled={deletingId === box.id}
+                                onClick={() => handleDeleteSet(box.id)}
+                                className="w-full flex items-center px-4 py-2 gap-2 rounded-xl text-red-600 bg-red-100 hover:bg-red-200 transition-colors cursor-pointer"
+                            >
+                                <Trash2 className="w-4 h-4" />
+                                <span className="font-semibold text-[15px]"> {deletingId === box.id ? "Deleting..." : "Delete set"} </span>
+                            </button>
+
+                        </div>
+                    )}
+                </div>
                 
             </div>
         ))

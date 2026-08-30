@@ -71,3 +71,11 @@ export async function currentUser(){
     method: "GET"
   });
 }
+
+
+//delete flashcard set
+export async function deleteSet(id: number) {
+  return apiRequest(`/sets/${id}`, {
+    method: "DELETE",
+  });
+}
