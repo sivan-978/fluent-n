@@ -1,9 +1,11 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
+from sqlalchemy import func
 
 from app.database import get_db
 from app.models.flashcard_sets import FlashcardSet
+from app.models.flashcards import Flashcard
 from app.schemas.set import SetCreate
 from app.core.security import get_current_user
 from app.models.user import User
@@ -39,13 +41,37 @@ def get_my_sets(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    sets = (
-        db.query(FlashcardSet)
-        .filter(FlashcardSet.owner_id == current_user.id)
+    results = (
+        db.query(
+            FlashcardSet,
+            func.count(Flashcard.id).label("cards_count")
+        )
+        .outerjoin(
+            Flashcard,
+            Flashcard.set_id == FlashcardSet.id
+        )
+        .filter(
+            FlashcardSet.owner_id == current_user.id
+        )
+        .group_by(
+            FlashcardSet.id
+        )
         .all()
     )
 
-    return sets
+    return [
+        {
+            "id": flashcard_set.id,
+            "title": flashcard_set.title,
+            "description": flashcard_set.description,
+            "source_language": flashcard_set.source_language,
+            "target_language": flashcard_set.target_language,
+            "level": flashcard_set.level,
+            "created_at": flashcard_set.created_at,
+            "cards_count": cards_count,
+        }
+        for flashcard_set, cards_count in results
+    ]
 
 
 # to delete a flashcard set

@@ -26,7 +26,7 @@ export default function SetsPage() {
 
                     target_language: languagesData.find((lang) => lang.code === s.target_language)?.label || s.target_language,
                     lastView: s.created_at ? timeAgo(s.created_at) : "never",
-                    cardsCount: s.flashcards?.length ?? 0,
+                    cardsCount: s.cards_count,
                     completed: "0%",
                     bg: "/icons/boxBg.jpg",
                 }));
