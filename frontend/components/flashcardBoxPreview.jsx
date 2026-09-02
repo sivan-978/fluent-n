@@ -74,7 +74,7 @@ export default function flashcardBoxPreview({ items = [], setItems }) {
                                         {box.level}
                                     </span>
                                 )}
-                                <span className="text-sm border border-[#8B4513] text-[#8B4513] px-1.5 rounded-lg font-semibold">{box.language}</span>
+                                <span className="text-sm border border-[#8B4513] text-[#8B4513] px-1.5 rounded-lg font-semibold">{box.target_language}</span>
                             </div>
                         </div>
 

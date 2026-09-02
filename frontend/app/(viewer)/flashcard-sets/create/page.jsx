@@ -68,6 +68,8 @@ export default function createSetPage() {
         return first.term.trim() && first.defination.trim();
     };
 
+
+    // create a set
     const handleCreate = async () => {
         setSubmitted(true)
 
@@ -75,7 +77,7 @@ export default function createSetPage() {
 
         try {
             // create set in backend
-            const newSet = await createSet(title, description, level)
+            const newSet = await createSet(title, description, sourceLanguage, targetLanguage, level)
 
             // create cards
             for (const card of cards) {

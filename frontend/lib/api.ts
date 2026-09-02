@@ -29,10 +29,10 @@ export async function apiRequest(endpoint: string, options: RequestInit = {}) {
 
 
 
-export async function createSet(title: string, description: string, level?: string ) {
+export async function createSet(title: string, description: string, sourceLanguage:string, targetLanguage: string, level?: string) {
   return apiRequest("/sets", {
     method: "POST",
-    body: JSON.stringify({ title, description, level: level || null,}),
+    body: JSON.stringify({ title, description, source_language: sourceLanguage, target_language: targetLanguage, level: level || null,}),
   })
 }
 

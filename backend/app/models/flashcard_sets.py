@@ -10,6 +10,8 @@ class FlashcardSet(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, nullable=False)
     description = Column(String)
+    source_language = Column(String, nullable=False)
+    target_language = Column(String, nullable=False)
     level = Column(String, nullable=True)
     
     owner_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)

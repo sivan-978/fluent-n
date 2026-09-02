@@ -1,37 +1,45 @@
 "use client";
 import { useEffect, useState } from "react";
 import FlashcardBoxPreview from "@/components/flashcardBoxPreview";
-import { getMySets } from "@/lib/api"
+import { getMySets, getLanguages } from "@/lib/api"
 import { Plus, Globe, ExternalLink, MoreVertical, BookOpen, Sparkles, Star, Layers, LayoutGrid, List } from 'lucide-react';
 import Link from 'next/link'
 
 export default function SetsPage() {
     const [items, setItems] = useState([]);
-
+    const [languages, setLanguages] = useState([]);
+    
     useEffect(() => {
-        async function loadSets() {
+        async function loadData() {
             try {
-                const sets = await getMySets()
+                const [sets, languagesData] = await Promise.all([
+                    getMySets(),
+                    getLanguages()
+                ]);
+
+                setLanguages(languagesData);
 
                 const mapped = sets.map((s) => ({
                     id: s.id,
                     title: s.title,
                     level: s.level,
-                    language: "Spanish",
+
+                    target_language: languagesData.find((lang) => lang.code === s.target_language)?.label || s.target_language,
                     lastView: s.created_at ? timeAgo(s.created_at) : "never",
                     cardsCount: s.flashcards?.length ?? 0,
                     completed: "0%",
                     bg: "/icons/boxBg.jpg",
-                }))
+                }));
 
-                setItems(mapped)
+                setItems(mapped);
+
             } catch (err) {
-                console.error(err)
+                console.error(err);
             }
         }
 
-        loadSets()
-    }, [])
+        loadData();
+    }, []);
 
 
     return (

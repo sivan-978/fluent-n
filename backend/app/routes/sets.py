@@ -21,6 +21,8 @@ def create_set(
     new_set = FlashcardSet(
         title=data.title,
         description=data.description,
+        source_language=data.source_language,
+        target_language=data.target_language,
         level=data.level,
         owner_id=current_user.id
     )
