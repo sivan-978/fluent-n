@@ -1,20 +1,21 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { SidebarProvider } from "@/app/_providers/sidebarProvider";
-import LoggedinHeader from "@/components/loggedinHeader.jsx"
-import SideNav from "@/components/sideNav";
-import LanguagePicker from "@/components/LanguagePicker";
+import LoggedinHeader from "@/components/layout/loggedinHeader.jsx"
+import SideNav from "@/components/layout/sideNav";
+import FlashcardSetDetails from "@/components/flashcards/flashcardSetDetails";
+import FlashcardList from "@/components/flashcards/flashcardList";
+import FlashcardCancelModal from "@/components/flashcards/flashcardCancelModal";
 
-import { DndContext, closestCenter, PointerSensor, useSensor, useSensors, } from "@dnd-kit/core";
-import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove, } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import { restrictToVerticalAxis, restrictToParentElement, restrictToWindowEdges, } from "@dnd-kit/modifiers";
+
+import { PointerSensor, useSensor, useSensors, } from "@dnd-kit/core";
+import { arrayMove, } from "@dnd-kit/sortable";
 import { createSet, createCard, getLanguages  } from "@/lib/api"
 
-import { ArrowLeft, Plus, Trash2, BookOpen, Globe, Sparkles, Star, X } from 'lucide-react';
+import { Plus, BookOpen, Globe, Sparkles, Star, X } from 'lucide-react';
 
 
 
@@ -194,7 +195,7 @@ export default function createSetPage() {
                     </aside>
 
 
-                    <main className="grid flex-1 mt-20 pt-8 px-60 gap-16 pb-10 bg-gradient-to-br from-[#fff3e3] to-[#ffe0b8] overflow-visible ">
+                    <main className="grid flex-1 mt-19 pt-8 px-60 gap-16 pb-10 bg-gradient-to-br from-[#fff3e3] to-[#ffe0b8] overflow-visible ">
 
                         <div className="flex justify-center">
                             {/* welcoming */}
@@ -211,153 +212,38 @@ export default function createSetPage() {
                             </div>
                         </div>
 
+
+
                         <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-10">
 
-                            {/* top section */}
-                            <div className="flex flex-col gap-3 p-10 relative z-50 bg-white/90 backdrop-blur-sm rounded-[2rem] shadow-2xl border-2 border-[#fc6b03]/10 ">
-                                
-                                <div className="absolute top-4 right-4 text-[#fc6b03]/30">
-                                    <Star className="w-6 h-6" />
-                                </div>
+                            {/* detail section top of page*/}
+                            <FlashcardSetDetails title={title}
+                                setTitle={setTitle}
+                                description={description}
+                                setDescription={setDescription}
+                                sourceLanguage={sourceLanguage}
+                                setSourceLanguage={setSourceLanguage}
+                                targetLanguage={targetLanguage}
+                                setTargetLanguage={setTargetLanguage}
+                                languages={languages}
+                                level={level}
+                                setLevel={setLevel}
+                                submitted={submitted} 
+                            />
 
 
-                                {/* Title */}
-                                <div className="w-full">
-                                    <label className="block text-[#965c09] font-bold mb-2 text-sm">
-                                        Title <span className="text-[#fc6b03]">*</span>
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        value={title}
-                                        onChange={(e) => setTitle(e.target.value)}
-                                        placeholder={`${submitted && !title.trim() ? "Please enter a Title to create the set." : "Enter a title, like 'Spanish Vocabulary - Chapter 3' 📚"}`}
-                                        className={`w-full px-6 py-4 bg-white border-2 border-[#fc6b03]/20 rounded-2xl outline-none focus:border-[#fc6b03] transition-colors text-[#965c09] placeholder:text-[#965c09]/40 ${submitted && !title.trim() ? "border-red-500 border-2 placeholder-gray-900 placeholder:font-medium" : ""}`}
-                                    />
-                                </div>
-
-
-                                {/* Description */}
-                                <div className="w-full">
-                                    <label className="block text-[#965c09] font-bold mb-2 text-sm">
-                                        Description (optional)
-                                    </label>
-
-                                    <textarea
-                                        value={description}
-                                        onChange={(e) => setDescription(e.target.value)}
-                                        placeholder="Add a description to help you remember what this set is about 💡"
-                                        rows={3}
-                                        className="w-full px-6 py-4 bg-white border-2 border-[#fc6b03]/20 rounded-2xl outline-none focus:border-[#fc6b03] transition-colors text-[#965c09] placeholder:text-[#965c09]/40 resize-none"
-                                    />
-                                </div>
-
-
-                                {/* Language selectors */}
-                                <div className="flex gap-6">
-                                    <LanguagePicker
-
-                                        label="Source Language"
-                                        value={sourceLanguage}
-                                        onChange={setSourceLanguage}
-                                        languages={languages}
-                                    />
-
-                                    <LanguagePicker
-                                        label="Target Language"
-                                        value={targetLanguage}
-                                        onChange={setTargetLanguage}
-                                        languages={languages}
-                                        excludeCode={sourceLanguage}
-                                    />
-                                </div>
-
-
-                                {/* flashcard set level*/}
-                                <div>
-                                    <label className="block text-[#965c09] font-bold mb-2 text-sm">
-                                        Flashcard set level (optional)
-                                    </label>
-
-                                    <select
-                                        value={level}
-                                        onChange={(e) => setLevel(e.target.value)}
-                                        className="w-full px-6 py-4 bg-white border-2 border-[#fc6b03]/20 rounded-2xl outline-none focus:border-[#fc6b03] text-[#965c09] font-medium"
-                                    >
-                                        <option value="">Select level</option>
-                                        <option value="A1">A1 - Beginner</option>
-                                        <option value="A2">A2 - Elementary</option>
-                                        <option value="B1">B1 - Intermediate</option>
-                                        <option value="B2">B2 - Upper Intermediate</option>
-                                        <option value="C1">C1 - Advanced</option>
-                                        <option value="C2">C2 - Proficient</option>
-                                    </select>
-                                </div>
-
-                            </div>
-
-                            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd} modifiers={[restrictToVerticalAxis,/*only up/down*/ restrictToParentElement,/*stay inside parent container*/ restrictToWindowEdges,/*optional: also clamp to viewport*/]}>
-                                <SortableContext items={cards.map((c) => c.id)} strategy={verticalListSortingStrategy}>
-
-                                    <div className="grid grid-cols-1 gap-4">
-                                        {cards.map((card, idx) => (
-                                            <SortableCard key={card.id} id={card.id}>
-                                                {({ attributes, listeners }) => (
-                                                    <div key={card.id} className="flex items-center gap-4 px-10 pt-7 pb-10 bg-white/90 backdrop-blur-sm shadow-2xl border-[#fc6b03]/40 border-2 outline-none text-2xl rounded-2xl">
-
-                                                        {/* Card number */}
-                                                        <div className="flex items-center justify-center flex-shrink-0 mt-5 text-sm text-white w-7 h-7 bg-gradient-to-br from-[#d35a03] to-[#813901] rounded-full font-black shadow-md">
-                                                            {idx + 1}
-                                                        </div>
-                                                        
-                                                        {/* Input fields */}
-                                                        <div className="flex flex-1 flex-col gap-1">
-                                                            <label className="text-[#965c09] text-sm font-medium"> {sourceLanguageLabel} </label>
-
-                                                            <input
-                                                                type="text"
-                                                                placeholder="Term"
-                                                                value={card.term}
-                                                                onChange={(e) => updateCard(card.id, "term", e.target.value)}
-                                                                className={`flex-1 text-[#965c09] bg-white rounded-lg py-2 px-3 border-2 border-[#fc6b03]/20 outline-none focus:border-[#fc6b03] placeholder:text-[#b47a29]/70 placeholder:text-sm placeholder:font-medium ${submitted &&  idx === 0 && !card.term.trim() ? "border-red-500 border-2 placeholder-gray-900 placeholder:font-medium" : ""}`}
-                                                            />
-                                                        </div>
-
-
-                                                        <div className="flex flex-1 flex-col gap-1">
-                                                            <label className="text-[#965c09] text-sm font-medium"> {targetLanguageLabel} </label>
-
-                                                            <input
-                                                                type="text"
-                                                                placeholder="Defination"
-                                                                value={card.defination}
-                                                                onChange={(e) => updateCard(card.id, "defination", e.target.value)}
-                                                                className={`flex-1 bg-white text-[#965c09] rounded-lg py-2 px-3 border-2 border-[#fc6b03]/20 outline-none focus:border-[#fc6b03] placeholder:text-[#b47a29]/70 placeholder:text-sm placeholder:font-medium ${submitted &&  idx === 0 && !card.defination.trim() ? "border-red-500 border-2 placeholder-gray-900 placeholder:font-medium" : ""}`}
-                                                            />
-                                                        </div>
-
-
-                                                        {/* Delete button */}
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => removeCard(card.id)}
-                                                            disabled={cards.length === 1}
-                                                            className={`flex-shrink-0 p-3 mt-6 rounded-xl transition-all ${
-                                                                cards.length === 1
-                                                                ? 'text-gray-300 cursor-not-allowed'
-                                                                : 'text-[#fc6b03] hover:bg-[#fc6b03] hover:text-white'
-                                                            }`}
-                                                        >
-                                                            <Trash2 className="w-5 h-5" />
-                                                        </button>
-                                                        
-                                                    </div>
-                                                )}
-                                            </SortableCard>
-                                        ))}
-                                    </div>
-                                </SortableContext>
-                            </DndContext>
+                            {/* flashcard list section*/}
+                            <FlashcardList
+                                cards={cards}
+                                sensors={sensors}
+                                onDragEnd={onDragEnd}
+                                sourceLanguageLabel={sourceLanguageLabel}
+                                targetLanguageLabel={targetLanguageLabel}
+                                updateCard={updateCard}
+                                removeCard={removeCard}
+                                submitted={submitted}
+                            />
+                            
 
                             <div className="flex justify-center">
                                 {/* Add card button */}
@@ -398,35 +284,10 @@ export default function createSetPage() {
                             </div>
 
                             {cancelModal && (
-                                <div className="flex items-center justify-center fixed inset-0 z-50">
-
-                                    {/* Background */}
-                                    <div className="flex flex-col gap-3 px-32 py-10 justify-center items-center relative shadow-xl border-2 border-[#fc6b03] rounded-2xl bg-[#fcf5ec]">
-
-                                        <p className="mb-4 font-semibold text-[#965c09]">
-                                            Discard changes?
-                                        </p>
-
-                                        <div className="flex gap-5">
-                                            {/* Stay */}
-                                            <button
-                                                onClick={() => setCancelModal(false)}
-                                                className="px-4 py-2 rounded-xl bg-[#fde2c2] text-[#965c09] font-semibold hover:bg-[#f0d2ac]"
-                                            >
-                                                Stay
-                                            </button>
-
-                                            {/* Leave */}
-                                            <button
-                                                onClick={() => router.push("/dashboard")}
-                                                className="px-4 py-2 rounded-xl bg-[#fc6b03] text-white font-semibold hover:bg-[#e85d00]"
-                                            >
-                                                Leave
-                                            </button>
-                                        </div>
-                                    </div>
-                                    
-                                </div>
+                                <FlashcardCancelModal
+                                    onStay={() => setCancelModal(false)}
+                                    onLeave={() => router.push("/dashboard")}
+                                />
                             )}
 
                         </form>
@@ -435,20 +296,5 @@ export default function createSetPage() {
                 </div>
             </div>
         </SidebarProvider>
-    );
-}
-
-
-//---sortable wrapper for a single card---
-function SortableCard({ id, children }) {
-    const { setNodeRef, attributes, listeners, transform, transition } = useSortable({ id });
-    const style = {
-        transform: CSS.Transform.toString(transform),
-        transition,
-    };
-    return (
-        <div ref={setNodeRef} style={style}>
-            {children({ attributes, listeners })}
-        </div>
     );
 }

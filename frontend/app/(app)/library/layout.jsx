@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import LoggedinHeader from "@/components/loggedinHeader"
-import SideNav from "@/components/sideNav"
+import LoggedinHeader from "@/components/layout/loggedinHeader"
+import SideNav from "@/components/layout/sideNav"
 import { Plus, Globe, ExternalLink, MoreVertical, BookOpen, Sparkles, Star, Layers } from 'lucide-react';
 
 

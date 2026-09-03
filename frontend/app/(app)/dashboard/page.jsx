@@ -1,7 +1,7 @@
 "use client";
 
-import LoggedinHeader from "@/components/loggedinHeader.jsx"
-import SideNav from "@/components/sideNav.jsx"
+import LoggedinHeader from "@/components/layout/loggedinHeader.jsx"
+import SideNav from "@/components/layout/sideNav.jsx"
 import ImageWithFallback from "@/components/ImageWithFallback.tsx"
 import { SidebarProvider } from "@/app/_providers/sidebarProvider";
 import {currentUser} from "@/lib/api.ts"

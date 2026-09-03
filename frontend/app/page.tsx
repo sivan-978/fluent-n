@@ -6,7 +6,7 @@ import { BookOpen, Sparkles, Globe, Lightbulb, Star, Zap, MessageSquare, PlusCir
 import { motion } from "motion/react";
 
 import FeatureCard from "@/components/featureCard"
-import Header from "@/components/header"
+import Header from "@/components/layout/header"
 
 
 

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { EllipsisVertical, Trash2 } from "lucide-react";
+import { EllipsisVertical, Trash2, Pencil } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import {deleteSet} from "@/lib/api.ts"
 
@@ -96,7 +96,7 @@ export default function flashcardBoxPreview({ items = [], setItems }) {
 
 
                 {/* 3 dots */}
-                <div  ref={menuRef}>
+                <div  ref={openMenu === box.id ? menuRef : null}>
 
                     <button
                         type="button"
@@ -107,7 +107,17 @@ export default function flashcardBoxPreview({ items = [], setItems }) {
                     </button>
 
                     {openMenu === box.id && (
-                        <div className="absolute right-2 top-13 px-6 py-4 bg-[#fff8f0] border border-[#965c09]/10 rounded-2xl shadow-xl z-[200]">
+                        <div className="absolute right-2 top-13 flex flex-col gap-3 px-6 py-4 bg-[#fff8f0] border border-[#965c09]/10 rounded-2xl shadow-xl z-[200]">
+
+                            <Link
+                                href={`/flashcard-sets/${box.id}/edit`}
+                                className="w-full flex items-center px-4 py-2 gap-2 rounded-xl text-[#965c09] bg-[#fbe9d0] hover:bg-[#dcbc8f] transition-colors"
+                            >
+                                <Pencil className="w-4 h-4" />
+                                <span className="font-semibold text-[15px]">
+                                    Edit set
+                                </span>
+                            </Link>
 
                             <button
                                 type="button"

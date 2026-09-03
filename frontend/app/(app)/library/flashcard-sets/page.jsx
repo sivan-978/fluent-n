@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import FlashcardBoxPreview from "@/components/flashcardBoxPreview";
+import FlashcardBoxPreview from "@/components/flashcards/flashcardBoxPreview";
 import { getMySets, getLanguages } from "@/lib/api"
 import { Plus, Globe, ExternalLink, MoreVertical, BookOpen, Sparkles, Star, Layers, LayoutGrid, List } from 'lucide-react';
 import Link from 'next/link'
