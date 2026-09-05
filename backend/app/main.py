@@ -1,12 +1,9 @@
 from fastapi import FastAPI
 from app.database import engine, Base
 from app.models import *
-from app.routes import auth
-from app.routes import users
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes import sets
-from app.routes import cards
-from app.routes import languages
+from app.routes import sets, cards, languages , flashcards, users, auth
+
 
 app = FastAPI()
 
@@ -25,6 +22,7 @@ app.include_router(users.router)
 app.include_router(sets.router)
 app.include_router(cards.router)
 app.include_router(languages.router)
+app.include_router(flashcards.router)
 
 @app.get("/health")
 def health_check():

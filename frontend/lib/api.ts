@@ -73,7 +73,49 @@ export async function currentUser(){
 }
 
 
-//delete flashcard set
+// get a single flashcard set with its cards
+export async function getSet(id) {
+  return apiRequest(`/sets/${id}`, {
+    method: "GET",
+  });
+}
+
+// update a flashcard set
+export async function updateSet( id, title, description, sourceLanguage, targetLanguage, level) {
+  return apiRequest(`/sets/${id}`, {
+    method: "PUT",
+    body: JSON.stringify({
+      title,
+      description,
+      source_language: sourceLanguage,
+      target_language: targetLanguage,
+      level: level || null,
+    }),
+  });
+}
+
+
+// update a flashcard
+export async function updateCard( cardId, frontText, backText) {
+  return apiRequest(`/cards/${cardId}`, {
+    method: "PUT",
+    body: JSON.stringify({
+      front_text: frontText,
+      back_text: backText,
+    }),
+  });
+}
+
+
+// delete a flashcard
+export async function deleteCard(cardId) {
+  return apiRequest(`/cards/${cardId}`, {
+    method: "DELETE",
+  });
+}
+
+
+//delete a flashcard set
 export async function deleteSet(id: number) {
   return apiRequest(`/sets/${id}`, {
     method: "DELETE",

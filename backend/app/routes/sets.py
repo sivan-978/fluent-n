@@ -1,12 +1,11 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from fastapi import HTTPException
 from sqlalchemy import func
 
 from app.database import get_db
 from app.models.flashcard_sets import FlashcardSet
 from app.models.flashcards import Flashcard
-from app.schemas.set import SetCreate
+from app.schemas.set import SetCreate, SetUpdate
 from app.core.security import get_current_user
 from app.models.user import User
 
@@ -72,6 +71,87 @@ def get_my_sets(
         }
         for flashcard_set, cards_count in results
     ]
+
+
+
+# get a single flashcard set with its cards
+@router.get("/{set_id}")
+def get_set(
+    set_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    flashcard_set = (
+        db.query(FlashcardSet)
+        .filter(
+            FlashcardSet.id == set_id,
+            FlashcardSet.owner_id == current_user.id
+        )
+        .first()
+    )
+
+    if not flashcard_set:
+        raise HTTPException(
+            status_code=404,
+            detail="Flashcard set not found"
+        )
+
+    return {
+        "id": flashcard_set.id,
+        "title": flashcard_set.title,
+        "description": flashcard_set.description,
+        "source_language": flashcard_set.source_language,
+        "target_language": flashcard_set.target_language,
+        "level": flashcard_set.level,
+        "created_at": flashcard_set.created_at,
+
+        "flashcards": [
+            {
+                "id": card.id,
+                "term": card.front_text,
+                "defination": card.back_text,
+            }
+            for card in flashcard_set.flashcards
+        ]
+    }
+
+
+# update a flashcard set
+@router.put("/{set_id}")
+def update_set(
+    set_id: int,
+    data: SetUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    # find the set and make sure it belongs to the current user
+    flashcard_set = (
+        db.query(FlashcardSet)
+        .filter(
+            FlashcardSet.id == set_id,
+            FlashcardSet.owner_id == current_user.id
+        )
+        .first()
+    )
+
+    if not flashcard_set:
+        raise HTTPException(
+            status_code=404,
+            detail="Flashcard set not found"
+        )
+
+    # update set information
+    flashcard_set.title = data.title
+    flashcard_set.description = data.description
+    flashcard_set.source_language = data.source_language
+    flashcard_set.target_language = data.target_language
+    flashcard_set.level = data.level
+
+    # save changes
+    db.commit()
+    db.refresh(flashcard_set)
+
+    return flashcard_set
 
 
 # to delete a flashcard set
