@@ -55,8 +55,8 @@ export default function createSetPage() {
     const [cancelModal, setCancelModal] = useState(false);
 
     const [cards, setCards] = useState([
-        { id: crypto.randomUUID(), term: "", defination: "" },
-        { id: crypto.randomUUID(), term: "", defination: "" },
+        { id: crypto.randomUUID(), term: "", definition: "" },
+        { id: crypto.randomUUID(), term: "", definition: "" },
     ]);
     const id = crypto.randomUUID();
 
@@ -66,7 +66,7 @@ export default function createSetPage() {
     const isValid = () => {
         if (!title.trim()) return false;
         if (!first) return false;
-        return first.term.trim() && first.defination.trim();
+        return first.term.trim() && first.definition.trim();
     };
 
 
@@ -87,7 +87,7 @@ export default function createSetPage() {
             await createCard(
                 newSet.id,
                 card.term,
-                card.defination
+                card.definition
             )
             }
 
@@ -106,7 +106,7 @@ export default function createSetPage() {
         setCards((prev) => prev.filter((c) => c.id !== id));
     };
 
-    //update card (because term and defination is in object n not single values like title n description)
+    //update card (because term and definition is in object n not single values like title n description)
     const updateCard = (id, field, value) => {
         setCards(prev =>
             prev.map((c) => (c.id === id ? { ...c, [field]: value } : c))
@@ -117,7 +117,7 @@ export default function createSetPage() {
     const addCard = () => {
         setCards((prev) => [
             ...prev,
-            { id: crypto.randomUUID(), term: "", defination: "" },
+            { id: crypto.randomUUID(), term: "", definition: "" },
         ]);
     };
 

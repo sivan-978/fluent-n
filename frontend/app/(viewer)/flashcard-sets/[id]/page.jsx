@@ -37,8 +37,8 @@ export default function FlashcardSetPage() {
                     description: found.description,
                     cards: cards.map((c) => ({
                         id: c.id,
-                        term: c.front_text,
-                        defination: c.back_text,
+                        term: c.term,
+                        definition: c.definition,
                     })),
                 })
 
@@ -126,7 +126,7 @@ export default function FlashcardSetPage() {
                 <FlipCard
                     key={current?.id}
                     term={current?.term ?? ""}
-                    definition={current?.defination ?? ""}
+                    definition={current?.definition ?? ""}
                     flipped={flipped}
                     onToggle={toggleFlip}
                 />

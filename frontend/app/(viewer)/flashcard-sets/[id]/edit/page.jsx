@@ -65,8 +65,6 @@ export default function EditingSetPage() {
                     getSet(id),
                 ]);
 
-                console.log("SET DATA:", setData);
-                console.log("FLASHCARDS:", setData.flashcards);
 
                 // Languages
                 setLanguages(languagesData);
@@ -84,7 +82,7 @@ export default function EditingSetPage() {
                     (setData.flashcards || []).map((card) => ({
                         id: card.id,
                         term: card.term || "",
-                        defination: card.defination || "",
+                        definition: card.definition || "",
                         isExisting: true,
                     }))
                 );
@@ -117,7 +115,7 @@ export default function EditingSetPage() {
         if (!title.trim()) return false;
         if (!first) return false;
 
-        return first.term.trim() && first.defination.trim();
+        return first.term.trim() && first.definition.trim();
     };
 
 
@@ -160,7 +158,7 @@ export default function EditingSetPage() {
             {
                 id: crypto.randomUUID(),
                 term: "",
-                defination: "",
+                definition: "",
                 isExisting: false,
             },
         ]);
@@ -223,7 +221,7 @@ export default function EditingSetPage() {
                     updateCard(
                         card.id,
                         card.term,
-                        card.defination
+                        card.definition
                     )
                 )
             );
@@ -238,7 +236,7 @@ export default function EditingSetPage() {
                     createCard(
                         id,
                         card.term,
-                        card.defination
+                        card.definition
                     )
                 )
             );

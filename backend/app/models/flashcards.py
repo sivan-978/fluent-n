@@ -10,8 +10,8 @@ class Flashcard(Base):
 
     id = Column(Integer, primary_key=True, index=True)
 
-    front_text = Column(String, nullable=False)
-    back_text = Column(String, nullable=False)
+    term = Column(String, nullable=False)
+    definition = Column(String, nullable=False)
 
     set_id = Column(Integer, ForeignKey("flashcard_sets.id"), nullable=False, index=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())

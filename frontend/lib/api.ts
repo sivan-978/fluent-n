@@ -38,10 +38,10 @@ export async function createSet(title: string, description: string, sourceLangua
 
 
 
-export async function createCard(setId: number, front_text: string, back_text: string) {
+export async function createCard(setId: number, term: string, definition: string) {
   return apiRequest(`/sets/${setId}/cards`, {
     method: "POST",
-    body: JSON.stringify({ front_text, back_text }),
+    body: JSON.stringify({ term, definition }),
   })
 }
 
@@ -96,12 +96,12 @@ export async function updateSet( id, title, description, sourceLanguage, targetL
 
 
 // update a flashcard
-export async function updateCard( cardId, frontText, backText) {
+export async function updateCard( cardId, term, definition) {
   return apiRequest(`/cards/${cardId}`, {
     method: "PUT",
     body: JSON.stringify({
-      front_text: frontText,
-      back_text: backText,
+      term: term,
+      definition: definition,
     }),
   });
 }

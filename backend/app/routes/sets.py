@@ -108,8 +108,8 @@ def get_set(
         "flashcards": [
             {
                 "id": card.id,
-                "term": card.front_text,
-                "defination": card.back_text,
+                "term": card.term,
+                "definition": card.definition,
             }
             for card in flashcard_set.flashcards
         ]

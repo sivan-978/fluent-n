@@ -77,14 +77,14 @@ export default function FlashcardList({ cards, sensors, onDragEnd, sourceLanguag
                                         <input
                                             type="text"
                                             placeholder="Definition"
-                                            value={card.defination}
+                                            value={card.definition}
                                             onChange={(e) =>
-                                                updateCard( card.id, "defination", e.target.value )
+                                                updateCard( card.id, "definition", e.target.value )
                                             }
                                             className={`flex-1 bg-white text-[#965c09] rounded-lg py-2 px-3 border-2 border-[#fc6b03]/20 outline-none focus:border-[#fc6b03] placeholder:text-[#b47a29]/70 placeholder:text-sm placeholder:font-medium ${
                                                 submitted &&
                                                 idx === 0 &&
-                                                !card.defination.trim()
+                                                !card.definition.trim()
                                                     ? "border-red-500 placeholder-gray-900 placeholder:font-medium"
                                                     : ""
                                             }`}

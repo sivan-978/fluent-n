@@ -31,8 +31,8 @@ def create_card(
 
     # create card
     new_card = Flashcard(
-        front_text=data.front_text,
-        back_text=data.back_text,
+        term=data.term,
+        definition=data.definition,
         set_id=set_id
     )
 

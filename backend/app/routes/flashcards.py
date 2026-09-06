@@ -48,8 +48,8 @@ def update_card(
         )
 
     # update the card
-    card.front_text = data.front_text
-    card.back_text = data.back_text
+    card.term = data.term
+    card.definition = data.definition
 
     db.commit()
     db.refresh(card)
