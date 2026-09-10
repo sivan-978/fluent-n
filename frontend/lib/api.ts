@@ -1,23 +1,85 @@
-import { getToken } from "./token";
+import { getToken, getRefreshToken, saveToken, removeToken } from "./token";
 
 const API_BASE_URL = "http://127.0.0.1:8000";
 
-export async function apiRequest(endpoint: string, options: RequestInit = {}) {
-  const token = getToken();
+let refreshPromise: Promise<string> | null = null;
 
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-    ...(options.headers as Record<string, string>),
-  };
+async function refreshAccessToken(): Promise<string> {
+  const refreshToken = getRefreshToken();
 
-  if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
+  if (!refreshToken) {
+    throw new Error("No refresh token");
   }
 
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-    ...options,
-    headers,
+  const response = await fetch(`${API_BASE_URL}/auth/refresh`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      refresh_token: refreshToken,
+    }),
   });
+
+  if (!response.ok) {
+    removeToken();
+    throw new Error("Session expired");
+  }
+
+  const data = await response.json();
+
+  saveToken(data.access_token);
+
+  return data.access_token;
+}
+
+
+export async function apiRequest(
+  endpoint: string,
+  options: RequestInit = {}
+) {
+
+  const makeRequest = async (token: string | null) => {
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+      ...(options.headers as Record<string, string>),
+    };
+
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+
+    return fetch(`${API_BASE_URL}${endpoint}`, {
+      ...options,
+      headers,
+    });
+  };
+
+  // first request
+  let token = getToken();
+
+  let response = await makeRequest(token);
+
+  // access token expired
+  if (response.status === 401 && endpoint !== "/auth/refresh") {
+    try {
+      // if multiple requests expire at the same time
+      // they all use the same refresh request
+      if (!refreshPromise) {
+        refreshPromise = refreshAccessToken().finally(() => {
+          refreshPromise = null;
+        });
+      }
+
+      token = await refreshPromise;
+
+      // retry original request with new access token
+      response = await makeRequest(token);
+    } catch (error) {
+      removeToken();
+      throw error;
+    }
+  }
 
   if (!response.ok) {
     const error = await response.json();

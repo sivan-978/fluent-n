@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, Lock, ArrowLeft, GraduationCap, Sparkles, Star, ArrowRight, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
+import { Mail, Lock, ArrowLeft, GraduationCap, Sparkles, Star, ArrowRight, Eye, EyeOff } from "lucide-react";
+
 import { loginUser } from "@/lib/auth";
-import { saveToken } from "@/lib/token";
+import { saveToken, saveRefreshToken  } from "@/lib/token";
 
 
 export default function LoginPage() {
@@ -25,6 +26,7 @@ export default function LoginPage() {
 
             // store JWT token
             saveToken(data.access_token);
+            saveRefreshToken(data.refresh_token);
 
             // redirect after login
             window.location.href = "/dashboard";

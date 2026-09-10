@@ -1,5 +1,5 @@
-import SideNav from "@/components/sideNav"
-import LoggedinHeader from "@/components/loggedinHeader"
+import SideNav from "@/components/layout/sideNav"
+import LoggedinHeader from "@/components/layout/loggedinHeader"
 
 function notificationLayout({ children }) {
     return (
