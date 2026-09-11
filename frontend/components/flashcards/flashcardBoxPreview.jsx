@@ -85,14 +85,7 @@ export default function flashcardBoxPreview({ data, setItems, selectionMode, isS
             )}
 
 
-            <Link
-                href={ selectionMode ? "#" : `/flashcard-sets/${data.id}` }
-                onClick={(event) => {
-                    if (selectionMode) {
-                        event.preventDefault();
-                        onSelect();
-                    }
-                }}
+            <div
                 className={`flex flex-col max-w-[340px] w-[340px]
                     bg-[#FFF4E3] border rounded-xl overflow-hidden shadow-[0_4px_12px_rgba(121,72,25,0.25)]
                     transition-all ${
@@ -102,55 +95,83 @@ export default function flashcardBoxPreview({ data, setItems, selectionMode, isS
                     }`}
             >
 
-                <div>
+                <Link
+                    href={`/flashcard-sets/${data.id}`}
+                    onClick={(event) => {
+                        if (selectionMode) {
+                            event.preventDefault();
+                            onSelect();
+                        }
+                    }}
+                    className="flex flex-col"
+                >
                     <img
                         className="w-full object-cover h-60 object-top"
                         src={data.bg}
                         alt="background img"
                     />
-                </div>
 
 
-                <div className="flex flex-col gap-4 px-5 py-4">
+                    <div className="flex flex-col gap-4 px-5 py-4">
 
-                    <div className="flex flex-col gap-2 overflow-hidden">
+                        <div className="flex flex-col gap-2 overflow-hidden">
 
-                        <p className="text-[#7A3E0A] font-bold text-2xl overflow-hidden overflow-ellipsis break-words">
-                            {data.title}
-                        </p>
+                            <p className="text-[#7A3E0A] font-bold text-2xl overflow-hidden overflow-ellipsis break-words">
+                                {data.title}
+                            </p>
 
 
-                        <div className="flex gap-1.5 items-center leading-tight">
+                            <div className="flex gap-1.5 items-center leading-tight">
 
-                            {data.level && (
+                                {data.level && (
+                                    <span className="text-sm border border-[#8B4513] text-[#8B4513] px-1.5 rounded-lg font-semibold">
+                                        {data.level}
+                                    </span>
+                                )}
+
                                 <span className="text-sm border border-[#8B4513] text-[#8B4513] px-1.5 rounded-lg font-semibold">
-                                    {data.level}
+                                    {data.target_language}
                                 </span>
-                            )}
 
-                            <span className="text-sm border border-[#8B4513] text-[#8B4513] px-1.5 rounded-lg font-semibold">
-                                {data.target_language}
-                            </span>
+                            </div>
 
+                        </div>
+
+
+                        <div className="flex flex-col text-sm text-[#965b09e8] font-semibold leading-tight">
+                            <span> {data.cardsCount} cards </span>
+                            <span> Last reviewed {data.lastView} </span>
                         </div>
 
                     </div>
 
+                </Link>
+                
 
-                    <div className="flex flex-col text-sm text-[#965b09e8] font-semibold leading-tight">
-                        <span> {data.cardsCount} cards </span>
-                        <span> Last reviewed {data.lastView} </span>
-                    </div>
-
-
-                    <div className="flex flex-col gap-1">
-                        <div className="flex-1 min-h-2 bg-[#D88900] rounded-full" />
+                {/* Progress + Practice */}
+                <div className="flex flex-col gap-3 px-5 pb-4">
+                    <div className="flex-1 min-h-2 bg-[#D88900] rounded-full" />
+                    
+                    <div className="flex items-center justify-between">
                         <p className="text-[#7e4d08]"> {data.completed} completed </p>
-                    </div>
 
+                        <Link
+                            href={`/flashcard-sets/${data.id}/practice`}
+                            onClick={(event) => {
+                                if (selectionMode) {
+                                    event.preventDefault();
+                                    onSelect();
+                                }
+                            }}
+                            className="px-6 py-1.5 rounded-xl bg-[#965c09] text-white font-semibold hover:bg-[#7d4d08] transition-all"
+                        >
+                            Practice
+                        </Link>
+                    </div>
+                    
                 </div>
 
-            </Link>
+            </div>
 
 
             {/* three dots only show outside selection mode */}
